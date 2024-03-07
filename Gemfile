@@ -97,7 +97,7 @@ gem "administrate", github: "excid3/administrate", branch: "jumpstart" # '~> 0.1
 gem "administrate-field-active_storage", "~> 0.4.2"
 gem "country_select", "~> 8.0"
 gem "cssbundling-rails", "~> 1.1.0"
-gem "devise", "~> 4.8", ">= 4.8.1"
+gem "devise", "~> 4.9"
 gem "devise-i18n", "~> 1.10"
 gem "inline_svg", "~> 1.9"
 gem "invisible_captcha", "~> 2.1"
