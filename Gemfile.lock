@@ -270,7 +270,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    icalendar (2.8.0)
+    icalendar (2.10.1)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
     image_processing (1.12.2)
@@ -664,7 +664,7 @@ DEPENDENCIES
   faker (~> 3.2)
   faraday (~> 2.7)
   google-api-client
-  icalendar (~> 2.8)
+  icalendar (~> 2.10)
   image_processing (~> 1.12)
   inline_svg (~> 1.9)
   invisible_captcha (~> 2.1)
