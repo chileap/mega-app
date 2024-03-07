@@ -1,0 +1,54 @@
+<div class="flex flex-col">
+  <div class="flex flex-row space-x-3">
+    <div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+      <%= form.select :type,
+        options_for_select(Habit.type.options, form.object.type),
+        {},
+        class: "block w-full border-0 border-gray-300 pr-12 focus:border-0 focus:ring-0 sm:text-sm",
+        "data-habits--form-target": "type",
+        data: {
+          action: "change->habits--form#updateUnitType"
+        }
+      %>
+    </div>
+
+    <div class="flex w-full mt-1 relative border-b border-gray-300 focus-within:border-indigo-600">
+      <%= form.number_field :value,
+        class: "block w-full pr-16 border-0 focus:border-0 focus:ring-0 sm:text-sm",
+        "data-habits--form-target": "value"
+      %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+        <span class="text-gray-500 sm:text-sm" data-habits--form-target="unitType">minutes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-row space-x-3">
+    <div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+      <%= form.text_field :time,
+        class: "block w-full border-0 border-gray-300 focus:border-0 focus:ring-0 sm:text-sm",
+        value: form.object.time.present? ? form.object.time.strftime("%H:%M") : Time.current.strftime("%H:%M"),
+        placeholder: "HH:MM",
+        "data-habits--form-target": "time",
+        data: {
+          controller: "flatpickr",
+          flatpickr_enable_time: true,
+          flatpickr_alt_format: "G:i K",
+          flatpickr_alt_input: true,
+          flatpickr_allow_input: true,
+          flatpickr_no_calendar: true,
+          flatpickr_alt_input_class: "block w-full border-0 bg-transparent border-gray-300 focus:border-0 focus:ring-0 sm:text-sm"
+        }
+      %>
+    </div>
+
+    <div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+      <%= form.select :frequency,
+        options_for_select(Habit.frequency.options),
+        {},
+        class: "block w-full border-0 border-gray-300 pr-12 focus:border-0 focus:ring-0 sm:text-sm",
+        "data-habits--form-target": "frequency"
+      %>
+    </div>
+  </div>
+</div>

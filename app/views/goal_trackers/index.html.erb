@@ -1,0 +1,83 @@
+<%= content_for :page_title do %>
+  <div class="flex">
+    <%= link_to habits_path(goal_id: @habit.goal_id), class: "pr-3" do %>
+      <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    <% end %>
+
+    <h1 class="text-2xl font-bold">Goal Tracker's Dashboard</h1>
+  </div>
+<% end %>
+
+<section class="flex h-full min-w-0 flex-1 flex-col p-4 overflow-hidden xl:order-last">
+  <div class="flex flex-col">
+    <h1 class="text-gray-700 text-2xl py-3"><%= @habit.title %></h1>
+    <div class="flex justify-between">
+      <span class="text-sm text-gray-700">Time:</span>
+      <span class="text-gray-700 text-sm">
+        <%= @habit.time.in_time_zone.strftime("%I:%M %p") %> - <%= @habit.frequency_text %>
+      </span>
+    </div>
+  </div>
+
+  <div class="flex flex-col">
+    <div class="flex justify-between">
+      <span class="text-sm text-gray-700">Goal:</span>
+      <span class="text-gray-700 text-sm"><%= @habit.goal_title %></span>
+    </div>
+
+    <div class="flex justify-between">
+      <span class="text-sm text-gray-700">Goal:</span>
+      <span class="text-gray-700 text-sm"><%= @habit.goal_value %><%= @habit.goal_unit %></span>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <span class="text-sm text-gray-700">Start From:</span>
+    <div class="inline-block">
+      <span class="text-gray-700 text-sm">
+        <%= @habit.start_date.strftime("%d %b %Y") %>
+      </span>
+
+      <% if @habit.end_date.present? %>
+        <span class="text-sm text-gray-700">To:</span>
+        <span class="text-gray-700 text-sm">
+          <%= @habit.end_date.strftime("%d %b %Y") %>
+        </span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="mt-2 grid grid-cols-1 gap-5">
+    <div class="overflow-hidden rounded-lg bg-white shadow">
+      <div class="p-5">
+        <div class="flex items-center justify-between">
+          <div class="flex-shrink-0">
+            <%= render_svg "icons/fire-full-color", styles: "icon-lg" %>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="truncate text-sm font-medium text-gray-500">Current Streak</dt>
+              <dd>
+                <div class="text-lg font-medium text-gray-900">
+                  <%= @habit.number_of_completed_days %> days
+                </div>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <canvas
+    data-controller="chart"
+    data-chart-data-value="<%= @chart_data.to_json %>"
+    data-chart-options-value="<%= @chart_options.to_json %>"
+    data-chart-type-value="bar"
+  ></canvas>
+</section>
+
+<section class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last md:border-l border-gray-200">
+  <%= render partial: "goal_trackers/goal_trackers", locals: { goal_trackers: @goal_trackers } %>
+</section>

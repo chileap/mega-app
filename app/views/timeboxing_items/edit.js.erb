@@ -1,0 +1,12 @@
+(function(){
+    // Remove any existing calendar form
+  if (document.querySelector('#calendar-popover-container')) {
+    document.querySelector('#calendar-popover-container').remove();
+  }
+
+  // Create a new calendar form
+  const calendarDetail = "<%= j(render partial: 'timeboxing_items/form', layout: 'shared/calendars/popover_container', locals: { timeboxing_item: @timeboxing_item, timeboxing: @timeboxing_item.timeboxing } ) %>";
+
+  // Insert the calendar form into the DOM
+  document.body.insertAdjacentHTML('beforeend', calendarDetail);
+})()

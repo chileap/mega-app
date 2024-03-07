@@ -1,0 +1,7 @@
+<div class="flex mt-4">
+  <%= link_to sanitize("&larr; Back to contacts"), contacts_path %>
+  <h1>New contact</h1>
+  <%= turbo_frame_tag @contact do %>
+    <%= render "form", contact: @contact %>
+  <% end %>
+</div>

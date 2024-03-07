@@ -1,0 +1,36 @@
+<%= simple_form_for [habit, goal_tracker], html: { data: { turbo: false } } do |form| %>
+  <%= render "shared/error_messages", resource: form.object %>
+  <%= hidden_field_tag :from, defined?(from) ? from : nil %>
+  <%= form.hidden_field :habit_id, value: goal_tracker.habit_id %>
+  <%= form.hidden_field :tracked_by_id, value: current_user.id %>
+  <%= form.hidden_field :tracked_at, value: goal_tracker.tracked_at %>
+
+  <div class="flex flex-row justify-between items-center mb-5">
+    <button class="inline-flex justify-center text-sm btn btn-gray btn-small" data-action="click->modal#close">
+      <%= render_svg "icons/cheveron-left", styles: "w-5 h-5 fill-current" %>
+    </button>
+    <h2 class="text-xl text-center">
+      Log Process for <%= goal_tracker.habit.title %>
+    </h2>
+
+    <%= form.button :button, class: "inline-flex justify-center text-sm btn btn-primary btn-small" do %>
+      <%= render_svg "icons/checkmark", styles: "h-5 w-5" %>
+    <% end %>
+  </div>
+
+  <hr class="mb-5"/>
+
+  <div class="flex flex-col w-full">
+    <label for="goal_tracker_value" class="block text-sm font-medium leading-6 text-gray-900 mb-0">Value</label>
+    <div class="relative mt-0">
+      <%= form.input :value, label: false, class: "block w-full rounded-md border-0 py-1.5 pr-12 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" %>
+      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+        <span class="text-gray-500 sm:text-sm">
+          <%= goal_tracker.unit %>
+        </span>
+      </div>
+    </div>
+
+    <%= form.file_field :image, class: "mt-2" %>
+  </div>
+<% end %>

@@ -1,0 +1,35 @@
+<%= content_for :title, "Meal Templates" %>
+
+<%= content_for :page_title do %>
+  <%= link_to meals_path, class: "pr-3" do %>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  <% end %>
+  <h1 class="text-2xl font-bold">Build a meal plan</h1>
+<% end %>
+
+<div class="container px-4 mx-auto my-8 overflow-auto">
+  <div class="flex items-center justify-center mb-4">
+    <%= link_to "Create your own meal", new_meal_path, class: "btn btn-primary w-full text-center justify-center" %>
+  </div>
+
+  <div data-controller="autocomplete" data-autocomplete-url-value="/meal_templates/search" role="combobox">
+    <div class="pb-4">
+      <div data-controller="meals" class="relative mt-1 rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <%= render_svg "icons/search", styles: "icon-sm fill-gray-400" %>
+        </div>
+        <input type="text" data-action="keyup->meals#searchMealTemplates" data-autocomplete-target="input" class="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="search your meal...">
+      </div>
+    </div>
+
+    <ul id="meal_templates_results" class="hidden" style="list-style-type: none;" data-autocomplete-target="results"></ul>
+
+    <%= tag.ul id: "meal_templates", role: "list", style: "list-style-type: none;" do %>
+      <%= turbo_frame_tag "meal_templates", class: "grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" do %>
+        <%= render @meal_templates if @meal_templates.present? %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

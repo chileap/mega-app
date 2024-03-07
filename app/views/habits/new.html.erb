@@ -1,0 +1,7 @@
+<div class="flex mt-4">
+  <%= link_to sanitize("&larr; Back to habits"), habits_path %>
+  <h1>New habit</h1>
+  <%= turbo_frame_tag @habit do %>
+    <%= render "form", habit: @habit, goal: @habit.goal %>
+  <% end %>
+</div>

@@ -1,0 +1,11 @@
+<div style="text-align: center;">
+  <h1 style="font-weight:400;line-height: 1.25;">
+    <%= t(".header_html", inviter: @invited_by.name, workspace: @workspace.name) %>
+  </h1>
+
+  <p style="margin-bottom:2rem;">
+    <%= t(".description_html", link: link_to(t(".accept_or_decline"), workspace_invitation_url(@workspace_invitation), target: :_blank)) %>
+  </p>
+
+  <%= link_to t(".view_invitation"), workspace_invitation_url(@workspace_invitation), style: "background:#38b2ac; color:#fff; border-radius: 4px; text-decoration: none; padding:.75rem 1rem;" %>
+</div>

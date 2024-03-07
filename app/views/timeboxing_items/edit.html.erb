@@ -1,0 +1,11 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">
+    <%= t("shared.scaffold.edit.title", model: "Timeboxing Item") %>
+  </h1>
+<% end %>
+
+<div  class="container mx-auto px-4 my-8">
+  <%= turbo_frame_tag @timeboxing_item do %>
+    <%= render "form", timeboxing_item: @timeboxing_item, timeboxing: @timeboxing_item.timeboxing %>
+  <% end %>
+</div>

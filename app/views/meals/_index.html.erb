@@ -1,0 +1,47 @@
+<%= turbo_frame_tag meal do %>
+  <li id="<%= dom_id(meal, :index) %>">
+    <div class="flex items-center justify-between">
+      <div class="flex min-w-0 flex-1 items-center justify-between w-full">
+        <div class="flex-shrink-0 px-4" data-controller="meals">
+          <%= form_with(model: meal, html: {'data-meals-target': 'form'}) do |f| %>
+            <%= f.check_box :completed_at,  {
+                  checked: f.object.completed? ,
+                  data: {action: "meals#submitForm"},
+                  class: "mr-2 align-middle bg-gray-50 border-gray-300 focus:ring-3 focus:ring-blue-300 h-5 w-5 rounded-full checked:bg-blue-500"
+                }, Time.current, ""
+              %>
+          <% end %>
+        </div>
+
+        <%= link_to meal_path(meal), method: :get, turbo: false, class: "block py-4 hover:bg-gray-50 w-full sm:px-6" do %>
+          <div class="min-w-0 flex-1 md:grid md:grid-cols-2 md:gap-4">
+            <div>
+              <p class="truncate text-sm font-medium text-indigo-600"><%= meal.name %></p>
+              <p class="mt-2 flex items-center text-sm text-gray-500">
+                <span class="truncate"><%= meal.description%></span>
+              </p>
+            </div>
+            <div class="hidden md:block">
+              <div>
+                <p class="text-sm text-gray-900">
+                  <span class="font-medium text-gray-500">Serving for</span>
+                  <%= meal.serving_for %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+
+      <div class="flex justify-end">
+        <%= link_to edit_meal_path(meal), class: 'flex-no-shrink p-2 ml-2 rounded', form: { data: { turbo_frame: "_top" } } do %>
+          <%= render_svg "icons/pencil-square", styles: "fill-none icon-lg text-gray-600 inline-block" %>
+        <% end %>
+        <%= link_to meal_path(meal), method: :delete, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+          <%= render_svg "icons/trash", styles: "fill-none icon-lg text-red-600 inline-block" %>
+        <% end %>
+      </div>
+    </div>
+  </li>
+<% end %>

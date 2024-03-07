@@ -1,0 +1,88 @@
+<%= turbo_frame_tag @task do %>
+  <div class="flex flex-col">
+    <%= simple_form_for @task, html: { id: "edit-task-form", data: { action: "submit->calendars--index#submitEditTaskForm", "task-id": @task.id } } do |f| %>
+
+      <%= f.hidden_field :id %>
+
+      <%= f.input :name, label: false,
+        placeholder: "Add a title",
+        wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+        input_html: {
+          class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+          autofocus: true
+        }
+      %>
+
+      <%= f.association :list, label: false, collection: current_workspace.lists,
+        wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+        input_html: {
+          class: "block w-full pl-0 border-0 shadow-none border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+        }
+      %>
+
+      <%= f.input :notes, label: false,
+        placeholder: "Notes",
+        wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+        input_html: {
+          class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+        }
+      %>
+
+      <div class="flex flex-row space-x-1">
+        <%= f.input :due_date, as: :string,
+          label: false,
+          placeholder: "Due Date",
+          wrapper_html: { class: "flex w-full border-b border-gray-300 focus-within:border-indigo-600"},
+          input_html: {
+            data: {
+              controller: "flatpickr",
+              flatpickr_alt_format: "D, M j, Y",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: true,
+              flatpickr_alt_input_class: "block w-full px-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+            }
+          }
+        %>
+
+        <%= f.input :due_time, as: :string,
+          label: false,
+          placeholder: "Due Time",
+          wrapper_html: { class: "#{ @task.due_all_day ? 'hidden' : 'flex' } w-full border-b border-gray-300 focus-within:border-indigo-600"},
+          input_html: {
+            data: {
+              controller: "flatpickr",
+              flatpickr_alt_format: "G:i K",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: true,
+              flatpickr_enable_time: true,
+              flatpickr_no_calendar: true,
+              flatpickr_date_format: "H:i",
+              flatpickr_minute_increment: 15,
+              flatpickr_alt_input_class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+            }
+          }
+        %>
+      </div>
+
+      <%= f.input :due_all_day, as: :boolean, label: "All Day",
+        wrapper_html: {
+          class: "w-48 flex justify-start items-center mt-3"
+        },
+        label_html: {
+          class: "text-sm text-gray-500"
+        },
+        input_html: {
+          data: {
+            action: "change->calendars--index#toggleDueTime"
+          },
+          class: "form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+        }
+      %>
+
+
+      <div class="flex mt-3 pt-3 justify-end">
+        <%= f.submit 'Save', id: "edit-task-submit-button", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

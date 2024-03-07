@@ -1,0 +1,23 @@
+<div class="flex flex-col">
+  <%= simple_form_for timeboxing_item, html: { data: { turbo: false }, class: "flex flex-col", id: "timeboxing-item-form", autocomplete: "off" } do |f| %>
+    <%= f.hidden_field :timeboxing_id, value: timeboxing.id %>
+    <%= f.hidden_field :start_time, value: timeboxing_item.start_time %>
+    <%= f.hidden_field :end_time, value: timeboxing_item.end_time %>
+    <%= f.hidden_field :time_zone, value: timeboxing_item.time_zone %>
+
+    <%= f.input :name, label: false,
+      placeholder: "Add a title",
+      wrapper_html: { class: "flex w-full mt-1 mb-2 border-b border-gray-300 focus-within:border-indigo-600"},
+      input_html: {
+        value: timeboxing_item.persisted? ? timeboxing_item.name : params[:name],
+        autofocus: true
+      }
+    %>
+
+    <%= f.input :priority, inline_label: "Priority", wrapper: :inline_boolean %>
+
+    <div class="flex justify-end">
+      <%= f.submit 'Save', id: "task-submit-button", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

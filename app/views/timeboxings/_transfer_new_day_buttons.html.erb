@@ -1,0 +1,20 @@
+<% if timeboxing.date.past? %>
+  <div data-controller="flatpickr" data-flatpickr-min-date="today" data-action="change->timeboxings--show#handleTransferItemToNewDay" data-timeboxing-id="<%= timeboxing.id %>">
+    <a class="flex items-center p-1 rounded border border-orange-300 bg-orange-300 hover:bg-orange-500 hover:border-orange-500 text-white" title="toggle" data-toggle data-controller="tooltip" data-tippy-content="Transfer All Uncompleted To Future Day" data-tippy-delay="0" data-tippy-arrow="true">
+      <%= render_svg "icons/calendar-settings", styles: "text-white w-5 h-5 inline-block" %>
+    </a>
+  </div>
+<% else %>
+  <%= link_to transfer_items_timeboxing_path(timeboxing_id: timeboxing&.id, date: timeboxing.date + 1.day),
+    method: :put,
+    class: "flex items-center p-1 rounded border border-orange-300 bg-orange-300 hover:bg-orange-500 hover:border-orange-500 text-white",
+    data: {
+      controller: "tooltip",
+      "tippy-content": "Transfer Uncompleted Tasks to Next Day",
+      "tippy-delay": "0",
+      "tippy-arrow": "true",
+      confirm: "Are you sure to transfer all uncompleted to next day?"
+    } do %>
+    <%= render_svg "icons/calendar-settings", styles: "text-white w-5 h-5 inline-block" %>
+  <% end %>
+<% end %>

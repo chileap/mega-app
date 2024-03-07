@@ -1,0 +1,7 @@
+<div class="flex mt-4">
+  <%= link_to sanitize("&larr; Back to tasks"), tasks_path %>
+    <h1>New Task</h1>
+    <%= turbo_frame_tag @task do %>
+    <%= render "form", task: @task %>
+  <% end %>
+</div>

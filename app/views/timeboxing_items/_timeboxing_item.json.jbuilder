@@ -1,0 +1,12 @@
+json.id timeboxing_item.id
+json.title timeboxing_item.name
+json.start timeboxing_item.start_time&.to_datetime&.rfc3339
+json.end timeboxing_item.end_time&.to_datetime&.rfc3339
+json.allDay false
+json.color timeboxing_item.color
+json.backgroundColor timeboxing_item.background_color
+json.textColor timeboxing_item.text_color
+json.priority timeboxing_item.priority
+json.completed timeboxing_item.completed?
+json.duration timeboxing_item.duration
+json.timeboxing_id timeboxing_item.timeboxing_id

@@ -1,0 +1,5 @@
+<% @meal_templates.each do |meal_template| %>
+  <li class="p-3" style="cursor: pointer;" role="option" data-autocomplete-value="<%= meal_template.id %>">
+    <%= meal_template.name %>
+  </li>
+<% end %>

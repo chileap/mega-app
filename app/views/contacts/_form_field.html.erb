@@ -1,0 +1,36 @@
+<div class="flex space-x-3">
+  <div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+    <%= form.text_field :first_name,
+      class: "block w-full border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+      "data-contacts--form-target": "firstName",
+      placeholder: "First Name" %>
+  </div>
+
+  <div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+    <%= form.text_field :last_name,
+      class: "block w-full border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+      "data-contacts--form-target": "lastName",
+      placeholder: "Last Name" %>
+  </div>
+</div>
+
+<div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+  <%= form.text_field :company_name,
+    class: "block w-full border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+    "data-contacts--form-target": "companyName",
+    placeholder: "Company Name" %>
+</div>
+
+<div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+  <%= form.text_field :website_url,
+    class: "block w-full border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+    "data-contacts--form-target": "websiteUrl",
+    placeholder: "Website URL" %>
+</div>
+
+<div class="flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+  <%= form.text_field :address,
+    class: "block w-full border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+    "data-contacts--form-target": "address",
+    placeholder: "Address" %>
+</div>

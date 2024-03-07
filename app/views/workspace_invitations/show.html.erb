@@ -1,0 +1,20 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Accept Invitation</h1>
+<% end %>
+
+<section class="flex h-full min-w-0 flex-1 flex-col p-8 overflow-hidden xl:order-last">
+  <div class="mx-auto mt-10 p-10 bg-white rounded-lg border border-gray-300 text-center" style="max-width: 600px">
+    <h1 class="text-3xl mb-3">Join <%= @workspace.name %></h1>
+    <div class="flex items-center justify-center text-gray-800">
+      <%= image_tag avatar_url_for(@workspace_invitation.workspace), class: "h-5 w-5 rounded-full inline-block mr-1" %>
+      <div>
+        <%= t(".invited_you_to_join_html", inviter: @workspace_invitation.invited_by.name, workspace: @workspace_invitation.workspace.name) %>
+      </div>
+    </div>
+
+    <div class="mt-5 flex gap-2 justify-center">
+      <%= button_to t(".accept"), workspace_invitation_path(@workspace_invitation.token), method: :put, class: "btn btn-primary" %>
+      <%= button_to t(".decline"), workspace_invitation_path(@workspace_invitation.token), method: :delete, class: "btn btn-white", data: {turbo_confirm: t("are_you_sure")} %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,5 @@
+<% @groceries.each do |grocery| %>
+  <li class="p-3" style="cursor: pointer;" role="option" data-autocomplete-value="<%= grocery.id %>">
+    <%= grocery.name %>
+  </li>
+<% end %>

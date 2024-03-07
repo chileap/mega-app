@@ -1,0 +1,77 @@
+<div class="relative h-full w-full">
+  <div class="flex justify-between">
+    <h2 class="text-base font-medium text-gray-700">My Calendars</h2>
+  </div>
+
+  <div class="mb-5 my-4 flex flex-row lg:flex-col">
+    <div class="relative flex items-start">
+      <div class="flex h-5 items-center">
+        <input
+          id="calendar_view_events"
+          value="events"
+          name="calendar_view[]"
+          type="checkbox"
+          checked
+          class="h-5 w-5 rounded border-gray-300 text-events focus:ring-0"
+          data-action="change->calendars--index#toggleCalendarView"
+        >
+      </div>
+      <div class="ml-3 text-sm">
+        <label for="calendar_view_events" class="font-medium text-gray-700">
+          Events
+        </label>
+      </div>
+    </div>
+
+    <div class="relative flex items-start px-2 lg:px-0 lg:mt-2">
+      <div class="flex h-5 items-center">
+        <input
+          id="calendar_view_tasks"
+          value="tasks"
+          name="calendar_view[]"
+          type="checkbox"
+          checked
+          class="h-5 w-5 rounded border-gray-300 text-tasks focus:ring-0"
+          data-action="change->calendars--index#toggleCalendarView"
+        >
+      </div>
+      <div class="ml-3 text-sm">
+        <label for="calendar_view_tasks" class="font-medium text-gray-700">Tasks</label>
+      </div>
+    </div>
+
+    <div class="relative flex items-start px-2 lg:px-0 lg:mt-2">
+      <div class="flex h-5 items-center">
+        <input
+          id="calendar_view_habits"
+          value="habits"
+          name="calendar_view[]"
+          type="checkbox"
+          checked
+          class="h-5 w-5 rounded border-gray-300 text-habits focus:ring-0"
+          data-action="change->calendars--index#toggleCalendarView"
+        >
+      </div>
+      <div class="ml-3 text-sm">
+        <label for="calendar_view_habits" class="font-medium text-gray-700">Habits</label>
+      </div>
+    </div>
+
+    <div class="relative flex items-start px-2 lg:px-0 lg:mt-2">
+      <div class="flex h-5 items-center">
+        <input
+          id="calendar_view_timeboxes"
+          value="timeboxing_items"
+          name="calendar_view[]"
+          type="checkbox"
+          checked
+          class="h-5 w-5 rounded border-gray-300 text-timeboxes focus:ring-0"
+          data-action="change->calendars--index#toggleCalendarView"
+        >
+      </div>
+      <div class="ml-3 text-sm">
+        <label for="calendar_view_timeboxes" class="font-medium text-gray-700">Timeboxes</label>
+      </div>
+    </div>
+  </div>
+</div>

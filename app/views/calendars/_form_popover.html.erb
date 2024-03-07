@@ -1,0 +1,18 @@
+<div id="tabs" data-controller="tabs" data-tabs-index="<%= @tab_index %>" data-tabs-active-tab="bg-indigo-100 text-indigo-700">
+  <ul class="list-none flex">
+    <li class="-mb-px mr-1 text-gray-500 hover:text-gray-700 rounded-md" data-tabs-target="tab" data-action="click->tabs#change">
+      <a data-tabs="event" data-id="event" class="inline-block py-2 px-4 text-current font-semibold no-underline" href="#">Event</a>
+    </li>
+    <li class="mr-1 text-gray-500 hover:text-gray-700 rounded-md" data-tabs="task" data-tabs-target="tab" data-action="click->tabs#change">
+      <a data-tabs="task" data-id="task" class="inline-block py-2 px-4 text-current font-semibold no-underline" href="#">Task</a>
+    </li>
+  </ul>
+
+  <div class="hidden pt-4" data-tabs-target="panel">
+    <%= render partial: 'calendars/event_form' %>
+  </div>
+
+  <div class="hidden pt-4" data-tabs-target="panel">
+    <%= render partial: 'calendars/task_form' %>
+  </div>
+</div>

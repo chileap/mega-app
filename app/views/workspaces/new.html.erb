@@ -1,0 +1,19 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
+<% end %>
+
+
+<%= content_for :content_sidebar do %>
+  <div class="w-72 flex flex-row lg:overflow-y-auto md:border-r border-gray-200 bg-white p-4 lg:block">
+    <%= render partial: "shared/account_navbar" %>
+  </div>
+<% end %>
+
+
+<div class="flex flex-wrap my-4 w-full px-4">
+  <div class="p-4 bg-white w-full">
+    <div class="mb-8 text-gray-700"><%= t(".description") %></div>
+
+    <%= render 'form', workspace: @workspace %>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<%= turbo_frame_tag list do %>
+  <li class="<%= params[:list_id] == list.id.to_s ? "bg-gray-300" : "bg-gray-100" %> hover:bg-gray-300 mb-2 rounded flex justify-between items-center">
+    <%= link_to tasks_path(list_id: list.id), class: "block w-full", data: { turbo_frame: "_top" } do %>
+      <div class="flex items-center px-2 py-2">
+        <div class="min-w-0 flex-1 flex items-center justify-between">
+          <div class="truncate">
+            <div class="flex">
+              <div class="flex items-center text-sm text-gray-500">
+                <span class="<%= list.default? ? 'bg-orange-500' : 'bg-blue-500'  %> h-6 w-6 inline-flex items-center mr-1.5 justify-center rounded-full">
+                  <%= render_svg "icons/list", styles: "h-4 w-4 flex-shrink-0 text-white inline-block" %>
+                </span>
+
+                <p class="text-sm font-medium text-gray-600">
+                  <%= list.name %>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="flex-shrink-0 ml-5">
+            <span>
+              <%= list.tasks.not_completed.count%>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% unless list.default? %>
+      <div class="relative inline-block items-center" data-controller="dropdown">
+        <div data-action="click->dropdown#toggle click@window->dropdown#hide touch->dropdown#toggle touch@window->dropdown#hide" role="button" class="inline-block select-none" aria-label="Profile Menu">
+          <span class="flex items-center w-full justify-center rounded-md" id="sort-menu-button" aria-expanded="false" aria-haspopup="true">
+            <span class="sr-only">Open options</span>
+            <%= render_svg "icons/dots-vertical-triple", styles: "fill-current-color h-5 w-5 inline-block" %>
+          </span>
+        </div>
+        <div data-dropdown-target="menu" class="hidden py-2 absolute right-0 dropdown-menu">
+          <div class="overflow-hidden bg-white border border-gray-200 rounded shadow-md">
+            <%= link_to edit_list_path(list), form: { data: { turbo_frame: "_top" } }, class: "text-gray-700 hover:text-gray-500 group flex items-center px-4 py-2 text-sm", role: "menuitem", tabindex: "-1" do %>
+              <%= render_svg "icons/pencil-square", styles: "fill-none mr-3 h-5 w-5 inline-block" %>
+              Edit
+            <% end %>
+
+            <% unless list.default? %>
+              <%= link_to list_path(list), method: :delete, class: "text-red-700 group flex items-center px-4 py-2 text-sm hover:text-red-900", role: "menuitem", tabindex: "-1" do %>
+                <%= render_svg "icons/trash", styles: "fill-none mr-3 h-5 w-5 text-red-600 inline-block" %>
+                Delete
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </li>
+<% end %>

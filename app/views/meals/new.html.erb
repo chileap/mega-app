@@ -1,0 +1,16 @@
+<%= content_for :title, t("shared.scaffold.new.title", model: "Meal") %>
+
+<%= content_for :page_title do %>
+  <%= link_to meals_path, class: "pr-3" do %>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  <% end %>
+  <h1 class="text-2xl font-bold">New Meals</h1>
+<% end %>
+
+<div class="container px-4 mx-auto my-8 overflow-auto">
+  <div class="p-8 bg-white rounded shadow">
+    <%= render "form", meal: @meal %>
+  </div>
+</div>

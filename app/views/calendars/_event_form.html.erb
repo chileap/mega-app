@@ -1,0 +1,156 @@
+<div class="flex flex-col">
+  <%= simple_form_for Event.new, html: { id: "event-form", data: { action: "submit->calendars--index#submitEventForm" }} do |f| %>
+    <%= f.input :name, label: false,
+      placeholder: "Add a title",
+      wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+      input_html: {
+        value: params[:name],
+        class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm",
+        autofocus: true
+      }
+    %>
+    <%= f.input :description, label: false,
+      placeholder: "Description",
+      wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+      input_html: {
+        value: params[:description],
+        class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+      }
+    %>
+    <%= f.hidden_field :time_zone, value: current_user.time_zone || browser_time_zone.name %>
+
+    <%= f.hidden_field :start_date_time, value: @start_date_time  %>
+    <%= f.hidden_field :end_date_time, value: @end_date_time  %>
+
+    <div class="flex flex-row flex-1">
+      <%= f.input :start_date, as: :string,
+        label: false,
+        placeholder: "Start Date",
+        wrapper_html: { class: "flex w-full border-b border-gray-300 focus-within:border-indigo-600"},
+        input_html: {
+          value: @start_date,
+          data: {
+            controller: "flatpickr",
+            flatpickr_alt_format: "D, M j, Y",
+            flatpickr_alt_input: true,
+            flatpickr_allow_input: true,
+            flatpickr_alt_input_class: "block w-full px-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+          }
+        }
+      %>
+
+      <div id="end-date-wrapper" class="<%= @all_day ? 'flex' : 'hidden' %> w-full mt-1 flex-row justify-center items-center">
+
+        <span class="text-gray-500 mr-2"> – </span>
+
+        <%= f.input :end_date, as: :string,
+          label: false,
+          placeholder: "End Date",
+          wrapper_html: { class: "flex w-full border-b border-gray-300 focus-within:border-indigo-600"},
+          input_html: {
+            value: @end_date,
+            data: {
+              controller: "flatpickr",
+              flatpickr_alt_format: "D, M j, Y",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: true,
+              flatpickr_alt_input_class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+            }
+          }
+        %>
+      </div>
+
+      <div id="time-event-wrapper" class="<%= @all_day ? 'hidden' : 'flex' %> w-full mt-1 flex-row justify-center items-center">
+        <span class="text-gray-500 mr-2">⋅</span>
+        <%= f.input :start_time, as: :string,
+          label: false,
+          placeholder: "Start Time",
+          wrapper_html: { class: "flex w-full border-b border-gray-300 focus-within:border-indigo-600"},
+          input_html: {
+            value: @start_time,
+            data: {
+              controller: "flatpickr",
+              flatpickr_alt_format: "G:i K",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: true,
+              flatpickr_enable_time: true,
+              flatpickr_no_calendar: true,
+              flatpickr_date_format: "H:i",
+              flatpickr_minute_increment: 15,
+              flatpickr_alt_input_class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+            }
+          }
+        %>
+
+        <span class="text-gray-500 mr-2"> – </span>
+
+        <%= f.input :end_time, as: :string,
+          label: false,
+          placeholder: "End Time",
+          wrapper_html: { class: "flex w-full border-b border-gray-300 focus-within:border-indigo-600"},
+          input_html: {
+            value: @end_time,
+            data: {
+              controller: "flatpickr",
+              flatpickr_alt_format: "G:i K",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: true,
+              flatpickr_enable_time: true,
+              flatpickr_no_calendar: true,
+              flatpickr_date_format: "H:i",
+              flatpickr_minute_increment: 15,
+              flatpickr_alt_input_class: "block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+            }
+          }
+        %>
+      </div>
+    </div>
+
+    <%= f.input :all_day, as: :boolean, label: "All Day",
+      wrapper_html: {
+        class: "w-48 flex justify-start items-center mt-3"
+      },
+      label_html: {
+        class: "text-sm text-gray-500"
+      },
+      input_html: {
+        class: "form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out",
+        checked: @all_day
+      }
+    %>
+
+
+    <%= f.input :repeat, as: :select, label: false,
+      collection: Event.repeat_options,
+      include_blank: false,
+      wrapper_html: { class: "flex w-full mt-1 border-b border-gray-300 focus-within:border-indigo-600"},
+      label_html: {
+        class: "text-sm text-gray-500"
+      },
+      input_html: {
+        class: "form-select block w-full pl-0 border-0 border-b border-transparent bg-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
+      }
+    %>
+
+    <div class="py-3">
+      <% Event::PROVIDER_OPTIONS.each do |provider| %>
+        <% next if current_workspace.connected_accounts.for_omniauth(provider).blank? %>
+
+        <div class="relative flex items-start">
+          <div class="flex h-5 items-center">
+            <%= check_box_tag 'sync_services[]', provider, nil, id: "sync_services_#{provider}" -%>
+          </div>
+          <div class="ml-3 text-sm">
+            <label for="sync_services_<%= provider %>" class="font-medium text-gray-700">
+              <%= h provider.titleize -%> Calendar
+            </label>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex mt-3 pt-3 justify-end">
+      <%= f.submit 'Save', id: "event-submit-button", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>

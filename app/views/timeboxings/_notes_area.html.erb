@@ -1,0 +1,22 @@
+<div class="flex flex-row justify-between items-center">
+  <h4 class="text-lg py-4">Notes</h4>
+
+  <div class="transfer-notes-action-area <%= timeboxing.notes.present? ? "" : "hidden" %>">
+    <%= render partial: "timeboxings/transfer_notes_to_next_day", locals: { timeboxing: timeboxing } %>
+  </div>
+</div>
+
+<%= simple_form_for timeboxing, url: timeboxing.persisted? ? "/timeboxings/#{timeboxing.id}" : timeboxings_path, method: timeboxing.persisted? ? :patch : :post, remote: true, turbo: false, html: { id: "timeboxing-notes-form", data: { type: "json", controller: "autosave", "autosave-target": "form", action: "ajax:success->timeboxings--show#handleNotesSuccess ajax:error->autosave#error" }, class: "flex flex-col", autocomplete: "off" } do |f| %>
+  <%= f.hidden_field :date, value: params[:date].present? ? params[:date] : Date.today %>
+  <input type="hidden" name="_method" value="<%= timeboxing.persisted? ? 'patch' : 'post' %>">
+  <div class="relative">
+    <%= f.input :notes, as: :text, label: false,
+      input_html: {
+        class: "notes",
+        rows: 10,
+        data: {action: "keyup->autosave#save"}
+      }
+    %>
+    <span class="autosave-message absolute bottom-2 right-2 justify-end flex" data-autosave-target="status"></span>
+  </div>
+<% end %>

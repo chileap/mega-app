@@ -1,0 +1,27 @@
+<%#
+# Navigation
+
+This partial is used to display the navigation in Administrate.
+By default, the navigation contains navigation links
+for all resources in the admin dashboard,
+as defined by the routes in the `admin/` namespace
+%>
+<%= link_to root_path, class: "btn btn-primary w-full justify-start my-3" do %>
+  <%= render_svg "icons/arrow-left", styles: "icon-sm fill-white" %>
+  <span class="pl-4">Back to App</span>
+<% end %>
+
+<%= link_to "Jumpstart", jumpstart_path, class: "navigation__link" if Rails.env.development? %>
+<%= link_to "Sidekiq", admin_sidekiq_web_path, class: "navigation__link", target: :_blank if defined?(::Sidekiq) %>
+
+<hr class="my-3" />
+
+<%= link_to "Dashboard", admin_root_path, class: "navigation__link navigation__link--#{resource_name.to_s.split("/").join("__") == 'dashboard' ? :active : :inactive}" %>
+
+<% Administrate::Namespace.new(namespace).resources.each do |resource| %>
+  <%= link_to(
+    display_resource_name(resource),
+    resource_index_route(resource),
+    class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+  ) if accessible_action?(resource, :index) && accessible_action?(model_from_resource(resource), :index) %>
+<% end %>

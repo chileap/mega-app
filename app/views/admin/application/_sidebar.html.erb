@@ -1,0 +1,31 @@
+<div id="sidebar-mobile">
+  <div data-slideover-target="overlay" data-action="click->slideover#_hide" class="fixed inset-0 flex z-40 transition-opacity ease-linear duration-300 opacity-0 hidden">
+    <div class="fixed inset-0">
+      <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
+    </div>
+    <div id="slideover-target" data-slideover-target="menu" class="relative flex-1 flex flex-col max-w-xs w-full h-full pt-5 pb-4 bg-white transition ease-in-out duration-300 transform -translate-x-full hidden">
+      <div class="absolute top-0 right-0 -mr-14 p-1">
+        <button data-action="slideover#_hide" class="flex items-center justify-center h-12 w-12 rounded-full focus:outline-none focus:bg-gray-600" aria-label="Close sidebar">
+          <span class="sr-only">Close sidebar</span>
+          <%= render_svg "icons/x-mark", styles: "w-6 h-6 text-white" %>
+        </button>
+      </div>
+      <div class="flex-1 h-0 overflow-y-auto">
+        <nav class="px-2 flex flex-col justify-between">
+          <%= render "navigation" %>
+        </nav>
+      </div>
+    </div>
+    <div class="flex-shrink-0 w-14">
+      <!-- Dummy element to force sidebar to shrink to fit close icon -->
+    </div>
+  </div>
+</div>
+
+<div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+  <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+    <nav class="flex flex-1 flex-col" role="navigation">
+      <%= render "navigation" -%>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+.fc-col-header-cell-cushion {
+  @apply text-gray-700;
+  @apply text-xs;
+}
+
+.fc-daygrid-day-number {
+  @apply text-gray-700;
+  @apply text-xs;
+  @apply font-semibold;
+}
+
+.fc-daygrid-day-top {
+  @apply justify-center;
+}
+
+.fc .fc-popover {
+  z-index: 9 !important;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+  border-top-width: 0px !important;
+}
+
+.fc-timegrid-slots tr {
+  height: 40px !important;
+}
+
+.fc-daygrid-event {
+  @apply text-xs !important;
+}
+
+.fc table {
+  @apply text-xs !important;
+}
+
+.fc-col-header-cell {
+  @apply border-b-0 !important;
+}
+
+.fc-col-header-cell-cushion {
+  @apply uppercase !important;
+  @apply font-medium !important;
+  @apply text-gray-500 !important;
+}
+
+.fc-daygrid-dot-event .fc-event-time, .fc-daygrid-dot-event .fc-event-title {
+  @apply text-gray-500 !important;
+}
+
+.timeboxing-calendar .fc-timegrid-col.fc-day-today {
+  @apply bg-white !important;
+}
+
+.timeboxing-calendar .fc-timegrid-col-events {
+  width: 99.89% !important;
+}
+
+.timeboxing-calendar .fc-timegrid-event-harness {
+  width: 99.89% !important;
+}
+
+.fc .fc-highlight {
+  background-color: #f3f4f6 !important;
+}
+
+.timeboxing-calendar .fc-timegrid-event {
+  @apply mb-0 !important;
+}

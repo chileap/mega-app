@@ -1,0 +1,8 @@
+.modal-container {
+  @apply animated fadeIn fixed inset-0 overflow-y-auto flex items-center justify-center;
+  z-index: 9999;
+}
+
+.modal-body {
+  @apply bg-white rounded shadow px-4 pt-2 pb-20;
+}

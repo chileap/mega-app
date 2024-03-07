@@ -1,0 +1,70 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">The Time Box</h1>
+<% end %>
+
+<%= content_for :content_sidebar do %>
+  <div class="w-full md:w-2/5 flex flex-col md:overflow-y-auto p-4">
+    <%= render partial: "timeboxings/timebox_sidebar", locals: { timeboxing: @timeboxing }%>
+  </div>
+<% end %>
+
+<section class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last">
+  <div class="flex flex-col lg:flex-row justify-between pb-4 space-y-2">
+    <div class="flex flex-col justify-end">
+      <p class="flex items-center justify-between border-b border-dashed">
+        <span id="date-title" class="text-right text-sm text-gray-700 italic pr-3">
+          DATE:
+        </span>
+
+        <span class="text-lg text-gray-700">
+          <%= text_field_tag :date, @timeboxing.date,
+            class: "border-none text-lg text-gray-700 shadow-none focus:outline-none focus:ring-0 focus:bg-transparent",
+            data: {
+              action: "change->timeboxings--show#handleInputDateChanged",
+              controller: "flatpickr",
+              flatpickr_alt_format: "m/d/Y",
+              flatpickr_alt_input: true,
+              flatpickr_allow_input: false,
+              flatpickr_alt_input_class: "block text-right w-24 p-0 border-0 bg-transparent border-gray-300 focus:border-0 focus:ring-0"
+            }
+          %>
+        </span>
+      </p>
+    </div>
+
+    <% if params[:date].present? && params[:date] != Date.today.strftime("%Y-%m-%d") %>
+      <div class="flex flex-col justify-center items-center">
+        <%= link_to "Today", timeboxing_path, class: "bg-white border border-gray-400 rounded-md btn-small items-center flex text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900" %>
+      </div>
+    <% end %>
+
+    <div class="flex flex-row justify-between">
+      <% previous_week_date = @timeboxing.date.beginning_of_week - 7.days %>
+      <% next_week_date = @timeboxing.date.end_of_week + 1.days %>
+
+      <button data-action="click->timeboxings--show#handleDateChanged" data-date="<%= previous_week_date.strftime("%Y-%m-%d") %>" data-timeboxings--show-target="timeboxingdates" class="w-8 h-8 timeboxing-dates cursor-pointer flex justify-center items-center hover:bg-gray-100 border border-gray-300">
+        <span class="text-xs">
+          <%= render_svg "icons/cheveron-left", styles: "fill-gray-600 w-6 h-6" %>
+        </span>
+      </button>
+
+      <% (@timeboxing.date.beginning_of_week).upto(@timeboxing.date.end_of_week) do |date| %>
+        <button data-action="click->timeboxings--show#handleDateChanged" data-date="<%= date.strftime("%Y-%m-%d") %>" data-timeboxings--show-target="timeboxingdates" class="w-8 h-8 timeboxing-dates cursor-pointer flex justify-center items-center <%= @timeboxing.date.strftime("%a") == date.strftime("%a") ? "bg-gray-300" : "bg-white" %> hover:bg-gray-100 border border-gray-300 ml-3">
+          <span class="text-xs"><%= date.strftime("%a") %></span>
+        </button>
+      <% end %>
+
+      <button data-action="click->timeboxings--show#handleDateChanged" data-date="<%= next_week_date.strftime("%Y-%m-%d") %>" data-timeboxings--show-target="timeboxingdates" class="w-8 h-8 timeboxing-dates cursor-pointer flex justify-center items-center hover:bg-gray-100 border border-gray-300 ml-3">
+        <span class="text-xs">
+          <%= render_svg "icons/cheveron-right", styles: "fill-gray-600 w-6 h-6" %>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div id="calendar" class="h-full border-t mb-2 timeboxing-calendar"></div>
+
+  <%= turbo_frame_tag "timeboxing-id" do %>
+    <%= hidden_field_tag :timeboxing_id, @timeboxing.id %>
+  <% end %>
+</section>

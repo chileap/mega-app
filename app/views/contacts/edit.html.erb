@@ -1,0 +1,11 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to contact"), contact_path(@contact) %>
+
+  <div class="header">
+    <h1>Edit contact</h1>
+  </div>
+
+  <%= turbo_frame_tag @contact do %>
+    <%= render "form", contact: @contact %>
+  <% end %>
+</main>

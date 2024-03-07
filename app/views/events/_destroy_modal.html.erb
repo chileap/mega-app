@@ -1,0 +1,26 @@
+<h2 class="text-2xl pb-3">Delete recurring event</h2>
+
+<%= form_for @event, url: destroy_recurring_event_path(@event), method: :delete, remote: true, id: "destroy-form-modal" do |f| %>
+  <input type="hidden" name="start_date" value="<%= @start_date %>">
+  <input type="hidden" name="end_date" value="<%= @end_date %>">
+
+  <div class="flex items-center">
+    <input id="this-event" value="this-event" name="destroy_method" type="radio" checked class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+    <label for="this-event" class="ml-3 block text-sm font-medium text-gray-700">This event</label>
+  </div>
+
+  <div class="flex items-center">
+    <input id="this-and-following-events" value="this-and-following-events" name="destroy_method" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+    <label for="this-and-following-events" class="ml-3 block text-sm font-medium text-gray-700">This event and following events</label>
+  </div>
+
+  <div class="flex items-center">
+    <input id="all-events" value="all-events" name="destroy_method" type="radio" class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500">
+    <label for="all-events" class="ml-3 block text-sm font-medium text-gray-700">All events</label>
+  </div>
+
+  <div class="flex justify-end space-x-2 mt-3">
+    <button id="close-btn" class="text-gray-500 cursor-pointer hover:text-white hover:bg-gray-700 p-3" type="button" data-dismiss="modal">Cancel</button>
+    <%= f.submit "Ok", class: "text-blue-600 cursor-pointer hover:text-white hover:bg-red-700 p-3", id: "destroy-submit-button" %>
+  </div>
+<% end %>

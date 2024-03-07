@@ -1,0 +1,213 @@
+<div class="relative h-full w-full">
+  <form class="mb-3 flex justify-between space-x-4" action="#">
+    <div class="min-w-0 flex-1">
+      <label for="search" class="sr-only">Search</label>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <!-- Heroicon name: mini/magnifying-glass -->
+          <%= render_svg "icons/search", styles: "fill-gray-400 text-gray-400 h-5 w-5 inline-block" %>
+        </div>
+        <input type="search" name="search" id="search" value="<%= params[:search] %>" class="block w-full rounded-md border-gray-300 pl-10 focus:border-pink-500 focus:ring-pink-500 sm:text-sm" placeholder="Search">
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none">
+        <%= render_svg "icons/funnel", styles: "fill-current-color h-5 w-5 inline-block" %>
+        <span class="sr-only">Search</span>
+      </button>
+
+      <%= link_to tasks_path, class: "inline-flex justify-center rounded-md border border-gray-300 bg-red-500 px-3.5 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none" do %>
+        <%= render_svg "icons/reload", styles: "fill-white h-5 w-5 inline-block" %>
+        <span class="sr-only">Reset</span>
+      <% end %>
+    </div>
+  </form>
+
+  <div class="relative inline-block" data-controller="dropdown">
+    <div data-action="click->dropdown#toggle click@window->dropdown#hide touch->dropdown#toggle touch@window->dropdown#hide" role="button" class="inline-block select-none" aria-label="Profile Menu">
+      <span class="flex items-center w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" id="sort-menu-button" aria-expanded="false" aria-haspopup="true">
+        <%= render_svg "icons/bars-arrow-up", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+      </span>
+    </div>
+    <div data-dropdown-target="menu" class="z-20 hidden mt-2 absolute left-0 dropdown-menu">
+      <div class="overflow-hidden bg-white border border-gray-200 rounded shadow-md">
+        <a href="<%= tasks_path %>" class="flex text-gray-700 px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="sort-menu-item-0">
+          <% if params[:sort_by].blank? %>
+            <%= render_svg "icons/checkmark", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+          <% end %>
+          <span class="<%= params[:sort_by].blank? ? 'ml-4' : 'ml-6 pl-3' %> text-gray-700">Default</span>
+        </a>
+        <a href="<%= url_for(request.params.merge(sort_by: 'priority')) %>" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="sort-menu-item-0">
+          <% if params[:sort_by] == "priority" %>
+            <%= render_svg "icons/checkmark", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+          <% end %>
+          <span class="<%= params[:sort_by] == 'priority' ? 'ml-4' : 'ml-6 pl-3' %> text-gray-700">Priority</span>
+        </a>
+        <a href="<%= url_for(request.params.merge(sort_by: 'due_date')) %>" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="sort-menu-item-1">
+          <% if params[:sort_by] == "due_date" %>
+            <%= render_svg "icons/checkmark", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+          <% end %>
+          <span class="<%= params[:sort_by] == 'due_date' ? 'ml-4' : 'ml-6 pl-3' %> text-gray-700">Due Date</span>
+        </a>
+
+        <hr>
+        <a href="<%= url_for(request.params.merge(sort_rule: 'asc')) %>" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="sort-menu-item-0">
+          <% if params[:sort_rule].blank? || params[:sort_rule] == "asc" %>
+            <%= render_svg "icons/checkmark", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+          <% end %>
+          <span class="<%= params[:sort_rule].blank? || params[:sort_rule] == 'asc' ? 'ml-4' : 'ml-6 pl-3' %> text-gray-700">
+            <%= params[:sort_by] == "priority" ? "Highest First" : "Earliest First" %>
+          </span>
+        </a>
+        <a href="<%= url_for(request.params.merge(sort_rule: 'desc')) %>" class="text-gray-700 flex px-4 py-2 text-sm" role="menuitem" tabindex="-1" id="sort-menu-item-0">
+          <% if params[:sort_rule] == "desc" %>
+            <%= render_svg "icons/checkmark", styles: "fill-gray-400 h-5 w-5 inline-block" %>
+          <% end %>
+          <span class="<%= params[:sort_rule] == 'desc' ? 'ml-4' : 'ml-6 pl-3' %> text-gray-700">
+            <%= params[:sort_by] == "priority" ? "Lowest First" : "Latest First" %>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-5xl pb-8">
+    <div class="my-3 grid grid-cols-2 gap-2">
+      <div class="relative flex items-start space-x-3 rounded-lg <%= view_class(params, "today") %> px-4 py-3 shadow-sm">
+        <div class="min-w-0 flex-1">
+          <a href="<%= url_for(request.params.merge(view: 'today').slice!(:list_id)) %>" class="focus:outline-none">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium mb-2">
+              <span class="<%= icon_wrapper_class(params, "today") %> h-6 w-6 inline-flex items-center justify-center rounded-full">
+                <%= render_svg "icons/browser-window", styles: " #{icon_class(params, 'today')} icon-xs inline-block" %>
+              </span>
+            </p>
+            <p class="text-sm font-semibold <%= view_class(params, "today") %>">Today</p>
+          </a>
+        </div>
+
+        <div class="flex-shrink-0">
+          <span>
+            <%= turbo_frame_tag "total_due_today_tasks" do %>
+              <%= tasks.due_today.count %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+
+      <div class="relative flex items-start space-x-3 rounded-lg px-4 py-3 shadow-sm <%= view_class(params, 'scheduled') %>">
+        <div class="min-w-0 flex-1">
+          <a href="<%= url_for(request.parameters.merge(view: 'scheduled').slice!(:list_id)) %>" class="focus:outline-none">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium mb-2">
+              <span class="h-6 w-6 <%= icon_wrapper_class(params, 'scheduled') %> inline-flex items-center justify-center rounded-full">
+                <%= render_svg "icons/calendar", styles: "#{icon_class(params, 'scheduled')} icon-xs inline-block" %>
+              </span>
+            </p>
+            <p class="text-sm font-semibold <%= view_class(params, 'scheduled') %>">Scheduled</p>
+          </a>
+        </div>
+
+        <div class="flex-shrink-0">
+          <span>
+            <%= turbo_frame_tag "total_schedules_tasks" do %>
+              <%= tasks.scheduled.count %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="my-3 grid grid-cols-2 gap-2">
+
+      <div class="relative flex items-start space-x-3 rounded-lg <%= view_class(params, "all") %> px-4 py-3 shadow-sm">
+        <div class="min-w-0 flex-1">
+          <a href="<%= url_for(request.parameters.merge(view: 'all').slice!(:list_id)) %>" class="focus:outline-none">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium mb-2">
+              <span class="<%= icon_wrapper_class(params, "all") %> h-6 w-6 inline-flex items-center justify-center rounded-full">
+                <%= render_svg "icons/inbox-outline", styles: "#{icon_class(params, "all")} icon-sm inline-block" %>
+              </span>
+            </p>
+            <p class="text-sm font-semibold <%= view_class(params, "all") %>">All</p>
+          </a>
+        </div>
+
+        <div class="flex-shrink-0">
+          <span>
+            <%= turbo_frame_tag "total_tasks" do %>
+              <%= tasks.not_completed.count %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+
+      <div class="relative flex items-start space-x-3 rounded-lg <%= view_class(params, "flagged") %> px-4 py-3 shadow-sm">
+        <div class="min-w-0 flex-1">
+          <a href="<%= url_for(request.parameters.merge(view: 'flagged').slice!(:list_id)) %>" class="focus:outline-none">
+            <span class="absolute inset-0" aria-hidden="true"></span>
+            <p class="text-sm font-medium mb-2">
+              <span class="<%= icon_wrapper_class(params, "flagged") %> h-6 w-6 inline-flex items-center justify-center rounded-full">
+                <%= render_svg "icons/flag", styles: "#{icon_class(params, "flagged")} icon-xs inline-block" %>
+              </span>
+            </p>
+            <p class="text-sm font-semibold <%= view_class(params, "flagged") %>">Flagged</p>
+          </a>
+        </div>
+
+        <div class="flex-shrink-0">
+          <span>
+            <%= turbo_frame_tag "total_flagged_tasks" do %>
+              <%= tasks.flagged.count %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between">
+    <h2 class="text-base font-medium text-gray-500">My Lists</h2>
+
+    <div
+      data-controller="modal"
+      data-modal-allow-background-close="true"
+      data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close"
+    >
+      <a href="#" data-action="click->modal#open" class="inline-flex sticky bottom-8 items-center rounded-full bg-white text-sm font-medium text-gray-700 hover:text-gray-600">
+        <!-- Heroicon name: mini/plus -->
+        <svg class="-ml-1 mr-2 h-5 w-5 text-gray-700 hover:text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+
+        <span>Add List</span>
+      </a>
+
+      <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed inset-0 overflow-y-auto flex items-center justify-center" style="z-index: 9999;">
+        <!-- Modal Inner Container -->
+        <div class="max-h-screen w-full max-w-lg relative">
+          <!-- Modal Card -->
+          <div class="m-1 bg-white rounded shadow">
+            <div class="p-8">
+              <h2 class="text-xl mb-4">New List</h2>
+
+              <%= turbo_frame_tag List.new do %>
+                <%= render partial: "lists/form", locals: { list: List.new } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="max-w-5xl mb-5 my-4">
+    <ul role="list" class="list-none">
+      <%= turbo_frame_tag "lists" do %>
+        <%= render @lists if @lists.present? %>
+      <% end %>
+    </ul>
+  </div>
+</div>

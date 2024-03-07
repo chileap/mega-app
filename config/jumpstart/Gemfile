@@ -1,0 +1,8 @@
+gem "omniauth-google-oauth2"
+gem "omniauth-microsoft_graph"
+gem "sentry-ruby"
+gem "sentry-rails"
+gem "sentry-sidekiq"
+gem "stripe"
+gem "sidekiq"
+gem "sidekiq-cron"

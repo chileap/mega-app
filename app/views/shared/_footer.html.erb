@@ -1,0 +1,8 @@
+<div class="flex space-x-6 md:order-2 text-xs leading-5 md:justify-end justify-center">
+  <%= link_to t(".about"), about_path, class: "text-gray-700 no-underline" %>
+  <%= link_to t(".privacy"), privacy_path, class: "text-gray-700 no-underline" %>
+  <%= link_to t(".terms"), terms_path, class: "text-gray-700 no-underline" %>
+</div>
+<p class="mt-8 text-xs leading-5 text-gray-700 md:order-1 md:mt-0 text-center">
+  &copy; <%= Date.current.year %> <%= Jumpstart.config.business_name %>. All rights reserved.
+</p>

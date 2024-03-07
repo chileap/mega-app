@@ -1,0 +1,85 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+  <% if page.resource.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= t(
+          "administrate.form.errors",
+          pluralized_errors: pluralize(page.resource.errors.count, t("administrate.form.error")),
+          resource_name: display_resource_name(page.resource_name, singular: true)
+        ) %>
+      </h2>
+
+      <ul>
+        <% page.resource.errors.full_messages.each do |message| %>
+          <li class="flash-error"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name %>
+    <%= f.text_field :name, autocomplete: "name", placeholder: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group flex">
+    <%= f.check_box :admin, autocomplete: "Admin", placeholder: true, class: "form-control mt-0" %>
+    <%= f.label :admin, class: "mb-0" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, autocomplete: "email", placeholder: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "new-password", placeholder: true, class: "form-control" %>
+    <% if @minimum_password_length %>
+      <p class="mt-3 text-sm text-gray-600"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></p>
+    <% end %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :time_zone %>
+    <%= f.select :time_zone, timezone_options.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{duplicated_timezone_options(tz)}", tz.tzinfo.name]}, {selected: find_selected_timezone_option(browser_time_zone).tzinfo.name}, {class: "form-control"} %>
+  </div>
+
+  <% if page.resource.persisted? %>
+    <div class="w-full">
+      <div class="flex items-center gap-4">
+        <%= image_tag avatar_url_for(f.object), class: "rounded-full" %>
+        <div>
+          <%= f.file_field :avatar, accept: "image/*", class: "file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if !page.resource.persisted? %>
+    <div class="form-group">
+      <%= f.check_box :terms_of_service, id: "tos", class: "form-checkbox mr-1" %>
+      <label for="tos" class="inline-block text-sm"><%= t "devise.registrations.new.terms_html", terms: link_to("terms of service", terms_path, target: "_blank", class: "btn-link"), privacy: link_to("privacy policy", privacy_path, target: "_blank", class: "btn-link") %></label>
+    </div>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit %>
+  </div>
+<% end %>

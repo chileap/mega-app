@@ -1,0 +1,349 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Dashboard</h1>
+<% end %>
+
+<div class="relative isolate overflow-hidden">
+  <header class="pb-4 pt-6 sm:pb-6">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-6 px-4 sm:flex-nowrap sm:px-6 lg:px-8">
+      <h1 class="text-base font-semibold leading-7 text-gray-900">Periods</h1>
+      <div class="order-last flex w-full gap-x-8 text-sm font-semibold leading-6 sm:order-none sm:w-auto sm:border-l sm:border-gray-200 sm:pl-6 sm:leading-7">
+        <%= link_to 'Last 7 days', root_path, class: "#{params[:view_by].blank? ? 'text-indigo-600' : 'text-gray-700'}" %>
+        <%= link_to 'Last 30 days', url_for(request.parameters.merge(view_by: "30days")), class: "#{params[:view_by] == '30days' ? 'text-indigo-600' : 'text-gray-700'}" %>
+        <%= link_to 'All-time', url_for(request.parameters.merge(view_by: "all")), class: "#{params[:view_by] == 'all' ? 'text-indigo-600' : 'text-gray-700'}" %>
+      </div>
+    </div>
+  </header>
+
+  <div class="border-b border-b-gray-900/10 lg:border-t lg:border-t-gray-900/5">
+    <dl class="mx-auto grid max-w-7xl grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:px-2 xl:px-0">
+      <div class="flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8">
+        <dt class="text-sm font-medium leading-6 text-gray-500">Upcoming Tasks</dt>
+        <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+          <%= current_workspace.tasks.number_not_completed_by(params[:view_by]) %>
+        </dd>
+      </div>
+
+      <div class="flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8 sm:border-l">
+        <dt class="text-sm font-medium leading-6 text-gray-500">Completed Tasks</dt>
+        <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+          <%= current_workspace.tasks.number_completed_by(params[:view_by]) %>
+        </dd>
+      </div>
+
+      <div class="flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8 lg:border-l">
+        <dt class="text-sm font-medium leading-6 text-gray-500">Completed Goal</dt>
+        <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+          <%= current_workspace.goals.number_completed_by(params[:view_by]) %>
+        </dd>
+      </div>
+
+      <div class="flex items-baseline flex-wrap justify-between gap-y-2 gap-x-4 border-t border-gray-900/5 px-4 py-10 sm:px-6 lg:border-t-0 xl:px-8 sm:border-l">
+        <dt class="text-sm font-medium leading-6 text-gray-500">Percentage of Completed Goals</dt>
+        <dd class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+          <%= current_workspace.goals.percentage_completed_by(params[:view_by]).to_i %>%
+        </dd>
+      </div>
+    </dl>
+  </div>
+
+  <div class="absolute left-0 top-full -z-10 mt-96 origin-top-left translate-y-40 -rotate-90 transform-gpu opacity-20 blur-3xl sm:left-1/2 sm:-ml-96 sm:-mt-10 sm:translate-y-0 sm:rotate-0 sm:transform-gpu sm:opacity-50" aria-hidden="true">
+    <div class="aspect-[1154/678] w-[72.125rem] bg-gradient-to-br from-[#FF80B5] to-[#9089FC]" style="clip-path: polygon(100% 38.5%, 82.6% 100%, 60.2% 37.7%, 52.4% 32.1%, 47.5% 41.8%, 45.2% 65.6%, 27.5% 23.4%, 0.1% 35.3%, 17.9% 0%, 27.7% 23.4%, 76.2% 2.5%, 74.2% 56%, 100% 38.5%)"></div>
+  </div>
+</div>
+
+<div class="flex flex-row">
+  <!-- Recent activity table -->
+  <div class="flex flex-col w-full border-r border-gray-200">
+    <div class="flex flex-col">
+      <div class="max-w-7xl pt-6 px-4 sm:px-6 lg:px-8">
+        <h2 class="max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">
+          Upcoming Events
+        </h2>
+      </div>
+      <div class="mt-6 overflow-hidden border-t <%= @events.present? ? '' : 'border-b' %> border-gray-100">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+            <% if @events.present? %>
+              <table class="w-full text-left">
+                <thead class="sr-only">
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @events.each do |date, events| %>
+                    <% next if events.count == 0 %>
+                    <tr class="text-sm leading-6 text-gray-900">
+                      <th scope="colgroup" colspan="3" class="relative isolate py-2 font-semibold">
+                        <time datetime="<%= date %>"><%= format_date(date) %></time>
+                        <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50"></div>
+                        <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50"></div>
+                      </th>
+                    </tr>
+
+                    <% events.each do |event| %>
+                      <tr>
+                        <td class="relative py-5 pr-6">
+                          <div class="flex gap-x-6">
+                            <div class="flex-auto">
+                              <div class="flex items-start gap-x-3">
+                                <div class="text-sm font-medium leading-6 text-gray-900"><%= event.name %></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="absolute bottom-0 right-full h-px w-screen bg-gray-100"></div>
+                          <div class="absolute bottom-0 left-0 h-px w-screen bg-gray-100"></div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="flex flex-col items-center justify-center w-full h-full py-8">
+                <div class="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-5a1 1 0 100-2 1 1 0 000 2zm2-5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="text-sm font-medium leading-6 text-gray-900">No upcoming events</div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full bg-slate-100">
+      <div class="max-w-7xl pt-6 px-4 sm:px-6 lg:px-8">
+        <h2 class="max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">
+          Upcoming Habits
+        </h2>
+      </div>
+      <div class="mt-6 overflow-hidden border-t <%= @habits.present? ? '' : 'border-b' %> border-gray-200">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+            <% if @habits.present? %>
+              <table class="w-full text-left">
+                <thead class="sr-only">
+                  <tr>
+                    <th>Name</th>
+                    <th class="hidden sm:table-cell">List</th>
+                    <th>More details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @habits.each do |habit| %>
+                    <tr>
+                      <td class="relative py-5 pr-6">
+                        <div class="flex gap-x-6">
+                          <div class="flex-auto">
+                            <div class="flex items-start gap-x-3">
+                              <div class="text-sm font-medium leading-6 text-gray-900">
+                                <%= habit.title %>
+                                <p class="text-gray-500 text-sm <%= habit.is_completed?(Date.today) ? 'line-through' : '' %>">
+                                  <%= habit.number_value_of_goal_trackers(Date.today) %> / <%= habit.goal_value %> <%= habit.goal_unit %>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="absolute bottom-0 right-full h-px w-screen bg-gray-300"></div>
+                        <div class="absolute bottom-0 left-0 h-px w-screen bg-gray-300"></div>
+                      </td>
+                      <td class="hidden py-5 pr-6 sm:table-cell">
+                        <div class="text-sm leading-6 text-gray-900"><%= habit.goal_title %></div>
+                      </td>
+
+                      <% if habit.goal_unit == "times" %>
+                        <td class="py-5 sm:table-cell justify-end">
+                          <%= simple_form_for [habit, GoalTracker.new], html: { data: {turbo: false} } do |form| %>
+                            <%= hidden_field_tag :from, "dashboard" %>
+                            <%= form.hidden_field :habit_id, value: habit.id %>
+                            <%= form.hidden_field :tracked_by_id, value: current_user.id %>
+                            <%= form.hidden_field :tracked_at, value: "#{@date} #{Time.current.strftime('%H:%M %z')}" %>
+                            <%= form.hidden_field :value, value: 1 %>
+                            <%= form.hidden_field :unit, value: habit.goal_unit %>
+                            <%= form.button :button, class: "flex ml-auto btn btn-white btn-small rounded-lg" do %>
+                              <%= render_svg "icons/checkmark", styles: "h-5 w-5" %>
+                            <% end %>
+                          <% end %>
+                        </td>
+                      <% else %>
+                        <td class="py-5 sm:table-cell justify-end">
+                          <div class="flex justify-end">
+                            <div data-controller="modal" data-modal-allow-background-close="true" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+                              <a href="#" data-action="click->modal#open" class="flex justify-center items-center btn btn-white btn-small rounded-lg">
+                                <%= render_svg "icons/keyboard-outline", styles: "h-5 w-5 mr-2" %> Log
+                              </a>
+
+                              <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="modal-container hidden">
+                                <div class="modal-body w-1/2">
+                                  <%= render partial: "goal_trackers/form", locals: { habit: habit, goal_tracker: GoalTracker.new(habit: habit, tracked_at: "#{@date} #{Time.current.strftime('%H:%M %z')}"), from: 'dashboard' } %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="flex flex-col items-center justify-center w-full h-full py-8">
+                <div class="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-5a1 1 0 100-2 1 1 0 000 2zm2-5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="text-sm font-medium leading-6 text-gray-900">No upcoming habits</div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col w-full border-r border-gray-200">
+    <div class="flex flex-col w-full">
+      <div class="max-w-7xl pt-6 px-4 sm:px-6 lg:px-8">
+        <h2 class="max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">Upcoming Tasks</h2>
+      </div>
+      <div class="mt-6 overflow-hidden border-t border-gray-100">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+            <% if @tasks.present? %>
+              <table class="w-full text-left">
+                <thead class="sr-only">
+                  <tr>
+                    <th>Name</th>
+                    <th class="hidden sm:table-cell">List</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @tasks.each do |date, tasks| %>
+                    <% next if tasks.count == 0 %>
+                    <tr class="text-sm leading-6 text-gray-900">
+                      <th scope="colgroup" colspan="3" class="relative isolate py-2 font-semibold">
+                        <time datetime="<%= date %>"><%= format_date(date) %></time>
+                        <div class="absolute inset-y-0 right-full -z-10 w-screen border-b border-gray-200 bg-gray-50"></div>
+                        <div class="absolute inset-y-0 left-0 -z-10 w-screen border-b border-gray-200 bg-gray-50"></div>
+                      </th>
+                    </tr>
+
+                    <% tasks.each do |task| %>
+                      <tr>
+                        <td class="relative py-5 pr-6">
+                          <div class="flex gap-x-6">
+                            <%= form_with(model: task, html: { data: { controller: "tasks--index" }, id: "form-completed-#{task.id}" }) do |f| %>
+                              <%= hidden_field_tag :list_id, task.list_id %>
+                              <%= f.check_box :completed_at,  {
+                                    checked: f.object.completed? ,
+                                    data: {action: "change->tasks--index#completedTask", "task-id": task.id },
+                                    class: "mr-2 align-middle bg-gray-50 border-gray-300 focus:ring-3 focus:ring-blue-300 h-5 w-5 rounded-full checked:bg-blue-500"
+                                  }, Time.current, ""
+                                %>
+                            <% end %>
+                            <div class="flex-auto">
+                              <div class="flex items-start gap-x-3">
+                                <div class="text-sm font-medium leading-6 text-gray-900">
+                                  <%= task.name %>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="absolute bottom-0 right-full h-px w-screen bg-gray-100"></div>
+                          <div class="absolute bottom-0 left-0 h-px w-screen bg-gray-100"></div>
+                        </td>
+                        <td class="hidden py-5 pr-6 sm:table-cell">
+                          <div class="text-sm leading-6 text-gray-900">
+                            <%= task.list_name %>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="flex flex-col items-center justify-center w-full h-full py-8">
+                <div class="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-5a1 1 0 100-2 1 1 0 000 2zm2-5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="text-sm font-medium leading-6 text-gray-900">
+                  No upcoming tasks
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col w-full bg-slate-100">
+      <div class="max-w-7xl pt-6 px-4 sm:px-6 lg:px-8">
+        <h2 class="max-w-2xl text-base font-semibold leading-6 text-gray-900 lg:mx-0 lg:max-w-none">
+          Must Do Tasks Today
+        </h2>
+      </div>
+      <div class="mt-6 overflow-hidden border-t <%= @timeboxing_items.present? ? '' : 'border-b' %> border-gray-200">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
+            <% if @timeboxing_items.present? %>
+              <table class="w-full text-left">
+                <thead class="sr-only">
+                  <tr>
+                    <th>Name</th>
+                    <th>More details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @timeboxing_items.each do |timeboxing_item| %>
+                    <tr>
+                      <td class="relative py-5 pr-6">
+                        <div class="flex flex-row">
+                          <%= simple_form_for timeboxing_item, html: {autocomplete: "off", class: "flex items-center", data: {remote: true, turbo: false, type: "json", controller: "timeboxings--show" }} do |form| %>
+                            <%= hidden_field_tag :date, params[:date].present? ? params[:date] : Date.today %>
+                            <%= form.hidden_field :priority, value: timeboxing_item.priority %>
+                            <%= form.input :completed_at, as: :boolean, label: false, checked_value: Time.current, unchecked_value: "", input_html: { checked: form.object.completed?, data: { action: "change->timeboxings--show#completeTimeboxingItem" } }%>
+                          <% end %>
+
+                          <div class="text-sm font-medium leading-6 text-gray-900 <%= timeboxing_item.completed? ? 'line-through' : '' %>">
+                            <%= timeboxing_item.name %>
+                          </div>
+                        </div>
+                        <div class="absolute bottom-0 right-full h-px w-screen bg-gray-300"></div>
+                        <div class="absolute bottom-0 left-0 h-px w-screen bg-gray-300"></div>
+                      </td>
+
+                      <td class="py-5 sm:table-cell">
+                        <div class="text-sm leading-6 text-gray-900 <%= timeboxing_item.completed? ? 'line-through' : '' %>">
+                          <%= timeboxing_item.time %>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% else %>
+              <div class="flex flex-col items-center justify-center w-full h-full py-8">
+                <div class="flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full">
+                  <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12zm-1-5a1 1 0 100-2 1 1 0 000 2zm2-5a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+                  </svg>
+                </div>
+                <div class="text-sm font-medium leading-6 text-gray-900">
+                  There is no must do tasks today.
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

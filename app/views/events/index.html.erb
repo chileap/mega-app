@@ -1,0 +1,52 @@
+<%= content_for :title, "Events" %>
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Events</h1>
+<% end %>
+<%= turbo_stream_from :events %>
+
+<div class="container mx-auto mb-8" >
+  <div class="items-center justify-between mb-4">
+    <div class="flex items-center justify-between flex-col md:flex-row">
+      <div class="flex flex-col md:flex-row md:space-x-2">
+        <%= link_to 'Sync Event with Google Calendar', sync_calendar_events_path(provider: 'google'), class: "btn btn-white my-4", data: {
+            turbo_method: :post } %>
+        <%= link_to 'Sync Event with Apple Calendar', sync_calendar_events_path(provider: 'apple'), class: "btn btn-white my-4", data: { turbo_method: :post } %>
+      </div>
+    </div>
+    <div>
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h1 class="text-xl font-semibold text-gray-900">Events</h1>
+          <p class="mt-2 text-sm text-gray-700">A list of all the events including google sync.</p>
+        </div>
+      </div>
+      <div class="mt-8 flex flex-col">
+        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+                <tr>
+                  <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0">Name</th>
+                  <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Description</th>
+                  <th scope="col" class="py-3.5 px-3 text-left text-sm font-semibold text-gray-900">Event Time</th>
+                  <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 md:pr-0">
+                    <span class="sr-only">Edit</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                <%= render partial: "events/index", collection: @events, as: :event, cached: true %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if @pagy.pages > 1 %>
+      <div class="my-6 text-center">
+          <%== pagy_nav(@pagy) %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<%= content_for :title, @meal_template.name %>
+<%= content_for :page_title do %>
+  <%= link_to load_templates_meals_path, class: "pr-3" do %>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  <% end %>
+<% end %>
+
+<div class="container px-4 mx-auto my-8 relative">
+  <div class="flex justify-between">
+    <div>
+      <h1 class="text-2xl font-bold"><%= @meal_template.name %></h1>
+      <p class="text-gray-500"><%= @meal_template.description %></p>
+      <p class="text-gray-500">
+        <%= pluralize(@meal_template.serving_for, "serving") %>
+      </p>
+    </div>
+
+    <div class="w-auto flex justify-center items-center">
+      <% if @meal_template.is_user_favorite?(current_user, current_workspace) %>
+        <%= link_to remove_from_favorite_meal_template_path(@meal_template, format: :html), method: :post, class: " text-primary hover:text-blue-700" do %>
+          <%= render_svg "icons/heart-outline", styles: "w-6 h-6 fill-blue-700 text-primary" %>
+        <% end %>
+      <% else %>
+        <%= link_to add_to_favorite_meal_template_path(@meal_template, format: :html), method: :post, class: " text-gray-400 hover:text-gray-500" do %>
+          <%= render_svg "icons/heart-outline", styles: "w-6 h-6 fill-white text-gray-400" %>
+        <% end %>
+      <% end %>
+
+      <%= link_to create_from_template_meals_path(meal_template_id: @meal_template.id), method: :post, class: 'btn btn-primary ml-4 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium' do %>
+        <%= render_svg "icons/clipboard-document", styles: "h-5 w-5 text-white" %>
+        <span class="ml-3">Add to a meal plan</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="min-w-0 flex flex-1">
+    <div class="bg-white lg:min-w-0 lg:flex-1 mr-3">
+      <h4 class="mb-4">Ingredients:</h4>
+      <%= tag.ul id: "ingredients", class: "mr-4 divide-y divide-gray-200 overflow-hidden bg-white shadow sm:rounded-md", style: "list-style-type: none;" do %>
+        <%= turbo_frame_tag 'ingredients' do %>
+          <%= render @meal_template.ingredient_templates.includes([:grocery]) %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="flex-1 xl:flex-shrink-0">
+      <h4 class="mb-4">Instructions:</h4>
+      <ul style="list-style-type: none;">
+        <% @meal_template.instruction_template_steps.each do |instruction| %>
+          <li class="pb-2"><%= instruction.full_description %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

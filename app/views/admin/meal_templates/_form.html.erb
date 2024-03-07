@@ -1,0 +1,58 @@
+<%#
+# Form Partial
+
+This partial is rendered on a resource's `new` and `edit` pages,
+and renders all form fields for a resource's editable attributes.
+
+## Local variables:
+
+- `page`:
+  An instance of [Administrate::Page::Form][1].
+  Contains helper methods to display a form,
+  and knows which attributes should be displayed in the resource's form.
+
+[1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
+%>
+
+<%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
+  <% if page.resource.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= t(
+          "administrate.form.errors",
+          pluralized_errors: pluralize(page.resource.errors.count, t("administrate.form.error")),
+          resource_name: display_resource_name(page.resource_name, singular: true)
+        ) %>
+      </h2>
+
+      <ul>
+        <% page.resource.errors.full_messages.each do |message| %>
+          <li class="flash-error"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if f.object.new_record? %>
+    <div class="field-unit field-unit--boolean ml-5">
+      <div class="relative flex items-start">
+        <div class="flex h-5 items-center">
+          <input id="auto_generate" aria-describedby="auto_generate-description" name="auto_generate" type="checkbox" value="true" checked class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+        </div>
+        <div class="ml-3 text-sm">
+          <label for="auto_generate" class="font-medium text-gray-700">Auto Generate from AI</label>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% page.attributes(controller.action_name).each do |attribute| -%>
+    <div class="field-unit field-unit--<%= attribute.html_class %> field-unit--<%= requireness(attribute) %>">
+      <%= render_field attribute, f: f %>
+    </div>
+  <% end -%>
+
+  <div class="form-actions">
+    <%= f.submit %>
+  </div>
+<% end %>

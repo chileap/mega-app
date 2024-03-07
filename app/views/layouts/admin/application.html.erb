@@ -1,0 +1,52 @@
+<%#
+# Application Layout
+
+This view template is used as the layout
+for every page that Administrate generates.
+
+By default, it renders:
+- Navigation
+- Content for a search bar
+  (if provided by a `content_for` block in a nested page)
+- Flashes
+- Links to stylesheets and JavaScripts
+%>
+
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" class="h-full bg-white">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noodp, noydir, index, follow">
+    <meta name="viewport" content="initial-scale=1">
+    <title>
+      <%= content_for(:title) || 'Dashboard' %> - <%= Jumpstart.config.application_name %>
+    </title>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= javascript_include_tag "administrate", "data-turbo-track": "reload", defer: true %>
+    <%= render "stylesheet" %>
+    <%= csrf_meta_tags %>
+    <meta name="turbo-root" content="/admin">
+  </head>
+  <body class="h-full font-sans antialiased overflow-hidden font-normal leading-normal bg-white">
+    <div
+      class="flex min-h-full relative"
+      data-controller="slideover"
+      data-slideover-open-value="false"
+      data-slideover-invisible-class="-translate-x-full,opacity-0"
+      data-slideover-visible-class="translate-x-0,opacity-100"
+      data-slideover-entering-class=""
+      data-slideover-enter-timeout="300,300"
+      data-slideover-leaving-class=""
+      data-slideover-leave-timeout="300,0"
+      data-slideover-active-target="#slideover-target"
+    >
+      <%= render "sidebar" %>
+
+      <div class="flex flex-1 flex-col overflow-hidden lg:pl-72">
+        <%= render "flashes" -%>
+        <%= yield %>
+      </div>
+    </div>
+    <%= render "javascript" %>
+  </body>
+</html>

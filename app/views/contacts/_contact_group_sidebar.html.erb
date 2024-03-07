@@ -1,0 +1,69 @@
+<div class="relative h-full">
+  <form class="mb-3 flex justify-between space-x-4" action="#">
+    <div class="min-w-0 flex-1">
+      <label for="search" class="sr-only">Search</label>
+      <div class="relative rounded-md shadow-sm">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <!-- Heroicon name: mini/magnifying-glass -->
+          <%= render_svg "icons/search", styles: "fill-gray-400 text-gray-400 h-5 w-5 inline-block" %>
+        </div>
+        <input type="search" name="search" id="search" value="<%= params[:search] %>" class="block w-full rounded-md border-gray-300 pl-10 focus:border-pink-500 focus:ring-pink-500 sm:text-sm" placeholder="Search">
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none">
+        <%= render_svg "icons/funnel", styles: "fill-current-color h-5 w-5 inline-block" %>
+        <span class="sr-only">Search</span>
+      </button>
+
+      <%= link_to contacts_path, class: "inline-flex justify-center rounded-md border border-gray-300 bg-red-500 px-3.5 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-500 focus:outline-none" do %>
+        <%= render_svg "icons/reload", styles: "fill-white h-5 w-5 inline-block" %>
+        <span class="sr-only">Reset</span>
+      <% end %>
+    </div>
+  </form>
+
+  <div class="flex justify-between mt-8">
+    <h2 class="text-base font-medium text-gray-500">Groups</h2>
+    <div
+      data-controller="modal"
+      data-modal-allow-background-close="true"
+      data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close"
+    >
+      <a href="#" data-action="click->modal#open" class="inline-flex items-center rounded-full bg-white text-sm font-medium text-gray-700 hover:text-gray-600">
+        <!-- Heroicon name: mini/plus -->
+        <svg class="-ml-1 mr-2 h-5 w-5 text-gray-700 hover:text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+
+        <span>Add Group</span>
+      </a>
+
+      <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed inset-0 overflow-y-auto flex items-center justify-center" style="z-index: 9999;">
+        <!-- Modal Inner Container -->
+        <div class="w-full max-w-lg relative">
+          <!-- Modal Card -->
+          <div class="m-1 bg-white rounded shadow">
+            <div class="p-8">
+              <h2 class="text-xl mb-4">New Group</h2>
+
+              <%= turbo_frame_tag ContactGroup.new do %>
+                <%= render partial: "contact_groups/form", locals: { contact_group: ContactGroup.new } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="max-w-5xl mb-5 my-4">
+    <ul role="list" style="list-style-type: none;">
+      <%= turbo_frame_tag "contact_groups" do %>
+        <%= render @contact_groups if @contact_groups.present? %>
+      <% end %>
+    </ul>
+  </div>
+</div>

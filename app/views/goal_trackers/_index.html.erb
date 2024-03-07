@@ -1,0 +1,106 @@
+<div class="flex flex-col px-4 justify-between border-b border-gray-200">
+  <div class="flex flex-col">
+    <div class="flex items-center justify-between pb-2">
+      <h1 class="text-gray-700 text-2xl"><%= current_habit.title %></h1>
+
+      <div class="flex items-center justify-end space-x-3">
+        <div class="inline-block items-center mt-1 lg:mt-2" data-controller="dropdown">
+          <div data-action="click->dropdown#toggle click@window->dropdown#hide touch->dropdown#toggle touch@window->dropdown#hide" role="button" class="inline-block select-none" aria-label="Profile Menu">
+            <span class="btn btn-white btn-small px-1 rounded-md" id="sort-menu-button" aria-expanded="false" aria-haspopup="true">
+              <span class="sr-only">Open options</span>
+              <%= render_svg "icons/dots-vertical-triple", styles: "fill-current-color h-5 w-5 inline-block" %>
+            </span>
+          </div>
+          <div data-dropdown-target="menu" class="hidden absolute right-0 dropdown-menu w-max">
+            <div class="overflow-hidden bg-white border border-gray-200 rounded-md shadow-md">
+              <div data-controller="modal" data-modal-allow-background-close="true" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+                <a href="#" data-action="click->modal#open" class="flex justify-between px-3 py-2 font-medium text-sm text-gray-800 hover:bg-gray-100">
+                  Edit
+                  <%= render_svg "icons/pencil-square", styles: "fill-none h-5 w-5 inline-block ml-2" %>
+                </a>
+
+                <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="modal-container hidden">
+                  <div class="modal-body min-w-1/2 w-1/2">
+                    <%= render partial: "habits/form", locals: { habit: current_habit, goal: current_habit.goal } %>
+                  </div>
+                </div>
+              </div>
+
+              <div data-controller="modal" data-modal-allow-background-close="true" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+                <a href="#" data-action="click->modal#open" class="flex justify-between px-3 py-2 font-medium text-sm text-gray-800 hover:bg-gray-100">
+                  Log Progress
+                  <%= render_svg "icons/keyboard-outline", styles: "fill-none h-5 w-5 ml-2" %>
+                </a>
+
+                <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="modal-container hidden">
+                  <div class="modal-body min-w-1/2 w-1/2">
+                    <%= render partial: "goal_trackers/form", locals: { habit: current_habit, goal_tracker: GoalTracker.new(habit: current_habit, tracked_at: "#{@date} #{Time.current.strftime('%H:%M')}") } %>
+                  </div>
+                </div>
+              </div>
+
+              <% if current_habit.is_completed?(@date) %>
+                <%= link_to undo_completed_habit_path(current_habit, date: @date), method: :put, data: { turbo: false, confirm: "Log value will be removed for Today , do you want to undo this habit?" }, class: "flex justify-between px-3 py-2 font-medium text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-800" do %>
+                  Undo Completion
+                  <%= render_svg "icons/reload", styles: "h-5 w-5 ml-2 fill-gray-600 hover:fill-gray-800 inline-block" %>
+                <% end %>
+              <% end %>
+
+              <%= link_to habit_path(current_habit), method: :delete, class: "flex justify-between px-3 py-2 font-medium text-sm text-red-600 hover:bg-gray-100 hover:text-red-800", role: "menuitem", tabindex: "-1", data: { turbo: false, confirm: "Are you sure to delete the habit \"#{current_habit.title}\"?" } do %>
+                Delete
+                <%= render_svg "icons/trash", styles: "fill-none h-5 w-5 ml-2 text-red-600 hover:text-red-800 inline-block" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-gray-700 text-sm">
+        <% if current_habit.start_date.present? %>
+          <%= current_habit.start_date.in_time_zone.strftime("%d %B") %>
+          <% if current_habit.end_date.present? %>
+            - <%= current_habit.end_date.in_time_zone.strftime("%d %B") %>
+          <% end %>
+        <% else %>
+          --
+        <% end %>
+      </span>
+    </div>
+  </div>
+
+  <div class="flex justify-between">
+    <span class="text-sm text-gray-700"></span>
+    <div class="inline-block">
+      <span class="text-gray-700 text-sm">
+        <%= current_habit.goal_value %> <%= current_habit.goal_unit %> <%= current_habit.frequency_text %>
+      </span>
+    </div>
+  </div>
+
+  <div class="flex justify-between">
+    <span class="text-sm text-gray-700">Progress:</span>
+    <div class="inline-block">
+      <span class="text-gray-700 text-sm">
+        <% if current_habit.all_completed? %>
+          <span class="text-green-500">All Completed</span>
+        <% elsif current_habit.is_completed?(@date) %>
+          <span class="text-green-500">Completed <%= @date.to_date == Date.today ? "today" : "on #{@date.strftime("%d %B")}" %></span>
+        <% else %>
+          <span class="text-red-500">To be completed <%= @date.to_date == Date.today ? "today" : "on #{@date.strftime("%d %B")}" %></span>
+        <% end %>
+      </span>
+    </div>
+  </div>
+</div>
+
+<canvas
+  data-controller="chart"
+  data-chart-type-value="bar"
+  data-chart-data-value="<%= @chart_data.to_json %>"
+  data-chart-options-value="<%= @chart_options.to_json %>"
+></canvas>
+
+<div class="relative w-full h-full pt-8 px-2 overflow-y-auto">
+  <%= render partial: "goal_trackers/goal_trackers", locals: { goal_trackers: goal_trackers } %>
+</div>

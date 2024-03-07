@@ -1,0 +1,7 @@
+<%= turbo_stream.append "contacts" do %>
+  <%= render @contact %>
+<% end %>
+
+<%= turbo_stream.update Contact.new, "" %>
+
+<%= turbo_stream.replace dom_id(@contact.contact_group), partial: "contact_groups/contact_group", locals: { contact_group: @contact.contact_group } %>

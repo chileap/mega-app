@@ -1,0 +1,3 @@
+<%= turbo_stream.replace dom_id(@ingredient), partial: "ingredients/ingredient", locals: { ingredient: @ingredient, meal: @ingredient.meal } %>
+
+<%= turbo_stream.prepend(:flash, partial: "shared/flash", locals: {notice: "Ingredient was successfully updated."}) %>

@@ -1,0 +1,38 @@
+<% brain_dump_columns = brain_dump_items.count >= 12 ? 1 : (12 - brain_dump_items.count) %>
+
+<div class="flex flex-row justify-between items-center">
+  <h4 class="text-lg py-4">All Tasks</h4>
+
+  <div class="actions-items-area flex flex-row space-x-3">
+    <div class="transfer-action-area <%= timeboxing.transferable_items.present? ? "" : "hidden" %>">
+      <%= render partial: "timeboxings/transfer_new_day_buttons", locals: { timeboxing: timeboxing } %>
+    </div>
+
+    <div class="delete-items-actions <%= timeboxing.present? && timeboxing.timeboxing_items.present? ? "" : "hidden" %>">
+      <%= link_to destroy_items_timeboxing_path(timeboxing_id: timeboxing&.id),
+        method: :delete,
+        class: "flex items-center p-1 rounded border border-red-400 bg-red-400 hover:bg-red-600 hover:border-red-600 text-white",
+        data: {
+          controller: "tooltip",
+          "tippy-content": "Delete All Items",
+          "tippy-delay": "0",
+          "tippy-arrow": "true",
+          confirm: "Are you sure to delete all items?"
+        } do %>
+        <%= render_svg "icons/delete-all-icon", styles: "fill-white w-5 h-5 inline-block" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<ul class="list-none timeboxing-items" id="brain-dump-items">
+  <%= turbo_frame_tag "brain-items" do %>
+    <% brain_dump_items.each do |brain_item| %>
+      <%= render partial: "timeboxing_items/brain_dump_item", locals: { item: brain_item } %>
+    <% end %>
+
+    <% brain_dump_columns.times do |t|%>
+      <%= render partial: "timeboxings/item_field_form", locals: { item: TimeboxingItem.new, timeboxing: timeboxing } %>
+    <% end %>
+  <% end %>
+</ul>

@@ -1,0 +1,7 @@
+(function(){
+  // Create a new calendar form
+  const calendarForm = "<%= j(render partial: 'tasks/form_popover', layout: 'shared/calendars/popover_container', locals: { task: @task } ) %>";
+
+  // Insert the calendar form into the DOM
+  document.body.insertAdjacentHTML('beforeend', calendarForm);
+})()
