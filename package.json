@@ -11,7 +11,7 @@
     "@gorails/ninja-keys": "^1.2.1",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/turbo-rails": "^7.3.0",
-    "@popperjs/core": "^2.11.7",
+    "@popperjs/core": "^2.11.8",
     "@rails/actioncable": "^7.0.0",
     "@rails/actiontext": "^7.0.0",
     "@rails/activestorage": "^7.0.0",
