@@ -13,7 +13,7 @@ gem "sprockets-rails", ">= 3.4.1"
 gem "pg"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 6.2"
+gem "puma", "~> 6.4"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails", "~> 1.4"
