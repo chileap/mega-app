@@ -41,12 +41,12 @@ GIT
 
 GIT
   remote: https://github.com/prawnpdf/prawn.git
-  revision: 8ceaa105f3e6038fac2eb4b84355d71b00d895f3
+  revision: ce374035905ef7691ddfa2dc015f4ea734d1f737
   specs:
-    prawn (2.4.0)
+    prawn (2.5.0)
       matrix (~> 0.4)
-      pdf-core (~> 0.9.0)
-      ttfunk (~> 1.7)
+      pdf-core (~> 0.10.0)
+      ttfunk (~> 1.8)
 
 PATH
   remote: lib/jumpstart
@@ -139,6 +139,7 @@ GEM
       erubi (~> 1.4)
       parser (>= 2.4)
       smart_properties
+    bigdecimal (3.1.6)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -401,7 +402,7 @@ GEM
       ast (~> 2.4.1)
     pay (6.3.1)
       rails (>= 6.0.0)
-    pdf-core (0.9.0)
+    pdf-core (0.10.0)
     pg (1.4.6)
     pg_search (2.3.6)
       activerecord (>= 5.2)
@@ -588,7 +589,8 @@ GEM
     tilt (2.1.0)
     timeout (0.3.2)
     trailblazer-option (0.1.2)
-    ttfunk (1.7.0)
+    ttfunk (1.8.0)
+      bigdecimal (~> 3.1)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
