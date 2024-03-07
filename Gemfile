@@ -51,7 +51,7 @@ group :development, :test do
 
   gem "annotate", github: "excid3/annotate_models", branch: "rails7"
   gem "erb_lint", require: false
-  gem "factory_bot_rails", "~> 6.2"
+  gem "factory_bot_rails", "~> 6.4"
   gem "faker", "~> 3.2"
   gem "letter_opener_web", "~> 2.0"
   gem "rspec-rails", "~> 6.0.0"
