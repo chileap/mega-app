@@ -128,7 +128,7 @@ gem "calendav", "~> 0.4.0"
 gem "ruby-openai"
 gem "public_suffix"
 gem "simple_form", "~> 5.2"
-gem "faraday", "~> 2.7"
+gem "faraday", "~> 2.9"
 gem "user_preferences", "~> 1.0", ">= 1.0.2"
 # Jumpstart manages a few gems for us, so install them from the extra Gemfile
 eval_gemfile "config/jumpstart/Gemfile" if File.exist?("config/jumpstart/Gemfile")
