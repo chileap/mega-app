@@ -9,7 +9,7 @@ class ChatgptClient
     puts "Prompt: #{prompt}"
     response = client.completions(
       parameters: {
-        model: "text-davinci-002", # text-davinci-002 is
+        model: "gpt-3.5-turbo", # gpt-3.5-turbo is
         prompt: prompt,
         max_tokens: 500, # 500 is the maximum words
         temperature: 0.5,
@@ -17,6 +17,10 @@ class ChatgptClient
       }
     )
     puts "getting result"
+    if response['error'].present?
+      raise response['error']
+      return []
+    end
     response.dig("choices", 0, "text").split("\n").reject { |text| text.empty? }
   rescue => e
     puts "Error: #{e.message}"
