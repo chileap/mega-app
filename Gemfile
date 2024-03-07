@@ -54,7 +54,7 @@ group :development, :test do
   gem "factory_bot_rails", "~> 6.2"
   gem "faker", "~> 3.2"
   gem "letter_opener_web", "~> 2.0"
-  gem "rspec-rails", "~> 6.0.0"
+  gem "rspec-rails", "~> 6.1.1"
   gem "standard", require: false
   gem "pry"
 
