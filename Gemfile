@@ -127,7 +127,7 @@ gem "google-api-client", require: "google/apis/calendar_v3"
 gem "calendav", "~> 0.4.0"
 gem "ruby-openai"
 gem "public_suffix"
-gem "simple_form", "~> 5.2"
+gem "simple_form", "~> 5.3"
 gem "faraday", "~> 2.7"
 gem "user_preferences", "~> 1.0", ">= 1.0.2"
 # Jumpstart manages a few gems for us, so install them from the extra Gemfile
