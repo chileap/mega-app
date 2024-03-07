@@ -120,7 +120,7 @@ gem "responders", github: "excid3/responders", branch: "fix-redirect-status-conf
 gem "rotp", "~> 6.2"
 gem "rqrcode", "~> 2.1"
 gem "ruby-oembed", "~> 0.16.0", require: "oembed"
-gem "view_component", "~> 2.80"
+gem "view_component", "~> 3.11"
 gem "enumerize"
 gem "icalendar", "~> 2.8"
 gem "google-api-client", require: "google/apis/calendar_v3"
