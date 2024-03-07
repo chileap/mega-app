@@ -1,0 +1,5 @@
+<section class="flex h-full min-w-0 flex-1 flex-col overflow-hidden xl:order-last p-8">
+  <%= turbo_frame_tag @goal do %>
+    <%= render "form", goal: @goal %>
+  <% end %>
+</section>

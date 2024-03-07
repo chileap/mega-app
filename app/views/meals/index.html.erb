@@ -1,0 +1,44 @@
+<%= content_for :title, "Meals" %>
+
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Meals</h1>
+<% end %>
+
+<%= turbo_stream_from :meals %>
+
+
+<div class="container p-4 mx-auto overflow-auto">
+  <div class="flex items-center justify-end mb-4">
+    <% if MealTemplate.all.count > 0 %>
+      <%= link_to "Build a meal plan", load_templates_meals_path, class: "btn btn-white" %>
+    <% else %>
+      <%= link_to "Build a meal plan", new_meal_path, class: "btn btn-white" %>
+    <% end %>
+  </div>
+
+  <div>
+    <% if @meals.present? %>
+      <%= turbo_frame_tag "meals", class: "grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" do %>
+        <%= render @meals %>
+      <% end %>
+
+      <% if @pagy.pages > 1 %>
+        <div class="my-6 text-center">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="hidden only:flex flex-col items-center justify-between lg:flex-row">
+        <%= image_tag "empty.svg", class: "mb-4 lg:w-1/2" %>
+        <div class="flex-1 text-center">
+          <p class="mb-4 h3">Create your first Meal</p>
+          <% if MealTemplate.all.count > 0 %>
+            <%= link_to "Build a meal plan", load_templates_meals_path, class: "btn btn-primary" %>
+          <% else %>
+            <%= link_to "Build a meal plan", new_meal_path, class: "btn btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

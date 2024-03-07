@@ -1,0 +1,4 @@
+view_options:
+  coupons: true
+  meal_plans: true
+  contacts: true

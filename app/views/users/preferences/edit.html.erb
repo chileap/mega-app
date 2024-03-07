@@ -1,0 +1,65 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Setting</h1>
+<% end %>
+
+
+<%= content_for :content_sidebar do %>
+  <div class="w-72 flex flex-row lg:overflow-y-auto md:border-r border-gray-200 bg-white p-4 lg:block">
+    <%= render partial: "shared/account_navbar" %>
+  </div>
+<% end %>
+
+
+<div class="divide-y divide-gray-200 pt-6">
+  <%= simple_form_for :user_preference, url: user_preferences_path, method: :put do |form| %>
+    <div class="px-4 sm:px-6">
+      <div>
+        <h2 class="text-lg font-medium leading-6 text-gray-900">User Preferences</h2>
+      </div>
+      <ul role="list" class="mt-2 divide-y divide-gray-200">
+        <li class="flex items-center justify-between py-4">
+          <div class="flex flex-col">
+            <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-1-label">Coupon</p>
+            <p class="text-sm text-gray-500" id="privacy-option-1-description">
+              Allow to show and hide coupon feature in application
+            </p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag 'view_options[coupons]', 'false' %>
+            <%= check_box_tag 'view_options[coupons]', true, current_user.preferences(:view_options).get(:coupons), class: "sr-only peer" %>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+        </li>
+        <li class="flex items-center justify-between py-4">
+          <div class="flex flex-col">
+            <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-2-label">Meal Plan</p>
+            <p class="text-sm text-gray-500" id="privacy-option-2-description">
+              Allow to show and hide meal plan feature in application
+            </p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag 'view_options[meal_plans]', 'false' %>
+            <%= check_box_tag 'view_options[meal_plans]', true, current_user.preferences(:view_options).get(:meal_plans), class: "sr-only peer" %>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+        </li>
+        <li class="flex items-center justify-between py-4">
+          <div class="flex flex-col">
+            <p class="text-sm font-medium leading-6 text-gray-900" id="privacy-option-3-label">Contact</p>
+            <p class="text-sm text-gray-500" id="privacy-option-3-description">
+              Allow to show or hide contact feature in application
+            </p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <%= hidden_field_tag 'view_options[contacts]', 'false' %>
+            <%= check_box_tag 'view_options[contacts]', true, current_user.preferences(:view_options).get(:contacts), class: "sr-only peer" %>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+          </label>
+        </li>
+      </ul>
+    </div>
+    <div class="mt-4 flex justify-end gap-x-3 px-4 py-4 sm:px-6">
+      <button type="submit" class="btn btn-primary btn-small">Save</button>
+    </div>
+  <% end %>
+</div>

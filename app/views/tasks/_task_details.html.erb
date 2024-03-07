@@ -1,0 +1,51 @@
+<%= turbo_frame_tag task do %>
+  <div class="flex mb-4 items-start w-full">
+    <div class="w-full">
+      <div class="flex w-full mb-2">
+        <div class="flex-1">
+          <div>
+            <label class="font-medium text-gray-700">
+              <%= task.name %>
+            </label>
+            <% if task.notes.present? %>
+              <p class="text-gray-500"><%= task.notes %></p>
+            <% end %>
+            <% if params[:list_id].blank? %>
+              <p class="text-gray-500"><%= task.list_name %></p>
+            <% end %>
+
+            <% if task.completed_at.present? %>
+              <p class="<%= task.over_deadline? ? 'text-red-500' : 'text-gray-500' %> font-medium">
+                <%= task.completed_at.strftime('%D') %>
+              </p>
+            <% elsif task.due_date.present? %>
+              <p class="<%= task.over_deadline? ? 'text-red-500' : 'text-gray-500' %> font-medium">
+                <%= task.due_date.strftime('%D') %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <% if task.flagged? %>
+            <span class="flex-no-shrink p-2 rounded text-orange-600 hover:text-orange-200">
+              <%= render_svg "icons/flag-outline", styles: "fill-orange-600 w-5 h-5 text-orange-600 inline-block" %>
+            </span>
+          <% else %>
+            <span class="flex-no-shrink p-2 rounded text-orange-600 hover:text-orange-200">
+              <%= render_svg "icons/flag-outline", styles: "fill-white w-5 h-5 text-gray-600 inline-block" %>
+            </span>
+          <% end %>
+        </div>
+        <div class="flex justify-end">
+          <%= link_to edit_popover_task_path(task), class: 'flex-no-shrink p-2 rounded', form: { data: { turbo_frame: "_top" } } do %>
+            <%= render_svg "icons/pencil-square", styles: "fill-none w-5 h-5 text-gray-600 inline-block" %>
+          <% end %>
+          <%= link_to task_path(task, from: 'calendar'), method: :delete, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+            <%= render_svg "icons/trash", styles: "fill-none w-5 h-5 text-red-600 inline-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+

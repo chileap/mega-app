@@ -1,0 +1,80 @@
+<%= turbo_frame_tag goal do %>
+  <li class="border <%= params[:goal_id] == goal.id.to_s ? 'bg-slate-200 border-slate-200' : 'bg-slate-50 border-slate-50' %> mb-2 p-2 rounded-lg flex flex-row justify-between items-center h-16 min-h-max">
+    <div class="flex w-2 h-full rounded-lg" style="background-color: <%= goal.color %>"></div>
+
+    <%= link_to url_for(request.parameters.except(:habit_id).merge(goal_id: goal.id)), class: "block w-full pl-2", data: { turbo_frame: "_top" } do %>
+      <p class="text-sm font-medium text-gray-600">
+        <%= goal.title %>
+      </p>
+
+      <% if goal.completed? %>
+        <span class="badge badge-sm badge-danger rounded-full">completed</span>
+        <span class="badge badge-sm badge-info rounded-full">
+          Total <%= goal.duration %> days
+        </span>
+      <% else %>
+        <div class="flex flex-row items-end pt-1">
+          <%= render_svg "icons/calendar", styles: "w-5 h-5 text-blue-500 opacity-50" %>
+
+          <% if goal.start_date.blank? %>
+            <p class="text-xs text-gray-500 ml-1">No time set</p>
+          <% else %>
+            <p class="text-xs text-gray-500 ml-1">
+              Until <%= goal.end_date.strftime("%b %d, %Y") %>
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="flex flex-row items-center justify-end w-10 h-10">
+      <% if goal.completed? %>
+        <%= render_svg "icons/checkmark-outline", styles: "w-5 h-5 fill-green-500" %>
+      <% else %>
+        <div class="goal-progress-bar w-5 h-5" data-goal-value="<%= goal.goal_process %>"></div>
+      <% end %>
+    </div>
+
+    <div class="inline-block items-center mt-1 lg:mt-2" data-controller="dropdown">
+      <div data-action="click->dropdown#toggle click@window->dropdown#hide touch->dropdown#toggle touch@window->dropdown#hide" role="button" class="inline-block select-none" aria-label="Profile Menu">
+        <span class="flex items-center w-full justify-center rounded-md" id="sort-menu-button" aria-expanded="false" aria-haspopup="true">
+          <span class="sr-only">Open options</span>
+          <%= render_svg "icons/dots-vertical-triple", styles: "fill-current-color h-5 w-5 inline-block" %>
+        </span>
+      </div>
+      <div data-dropdown-target="menu" class="hidden absolute right-0 dropdown-menu w-max">
+        <div class="overflow-hidden bg-white border border-gray-200 rounded-md shadow-md">
+          <div data-controller="modal" data-modal-allow-background-close="true" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+            <a href="#" data-action="click->modal#open" class="flex justify-between px-3 py-2 font-medium text-sm text-gray-800 hover:bg-gray-100">
+              Edit
+              <%= render_svg "icons/pencil-square", styles: "fill-none h-5 w-5 inline-block ml-2" %>
+            </a>
+
+            <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="modal-container hidden">
+              <div class="modal-body min-w-1/2 w-1/2">
+                <%= render partial: "goals/form", locals: { goal: goal } %>
+              </div>
+            </div>
+          </div>
+
+          <% if goal.completed? %>
+            <%= link_to uncompleted_goal_path(goal), method: :put, data: { turbo: false, confirm: "Are you sure to undo completed the goal \"#{goal.title}\"?" }, class: "flex justify-between px-3 py-2 font-medium text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-800" do %>
+              Cancel Completion
+              <%= render_svg "icons/close-outline", styles: "h-5 w-5 fill-gray-600 hover:fill-gray-800 inline-block" %>
+            <% end %>
+          <% else %>
+            <%= link_to completed_goal_path(goal), method: :put, data: { turbo: false, confirm: "Are you sure to complete the goal \"#{goal.title}\"?" }, class: "flex justify-between px-3 py-2 font-medium text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-800" do %>
+              Complete Goal
+              <%= render_svg "icons/checkmark-outline", styles: "h-5 w-5 ml-2 fill-gray-600 hover:fill-gray-800 inline-block" %>
+            <% end %>
+          <% end %>
+
+          <%= link_to goal_path(goal), method: :delete, class: "flex justify-between px-3 py-2 font-medium text-sm text-red-600 hover:bg-gray-100 hover:text-red-800", role: "menuitem", tabindex: "-1", data: { turbo: false, confirm: "Are you sure to delete the goal \"#{goal.title}\"?" } do %>
+            Delete
+            <%= render_svg "icons/trash", styles: "fill-none h-5 w-5 ml-2 text-red-600 hover:text-red-800 inline-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </li>
+<% end %>

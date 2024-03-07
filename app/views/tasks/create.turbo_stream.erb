@@ -1,0 +1,17 @@
+<%= turbo_stream.append "tasks" do %>
+  <%= render @task %>
+<% end %>
+
+<%= turbo_stream.update Task.new, "" %>
+
+<%= turbo_stream.update "total_tasks", current_workspace.tasks.not_completed.count %>
+<%= turbo_stream.update "total_tasks_with_filters", @task.list.tasks.not_completed.count %>
+<%= turbo_stream.update "total_schedules_tasks", current_workspace.tasks.scheduled.count %>
+<%= turbo_stream.update "total_due_today_tasks", current_workspace.tasks.due_today.count %>
+<%= turbo_stream.update "total_flagged_tasks", current_workspace.tasks.flagged.count %>
+
+<%= turbo_stream.update @task.list do %>
+  <%= turbo_stream.update "total_tasks_with_filters", @task.list.tasks.not_completed.count %>
+<% end %>
+
+<%= turbo_stream.replace dom_id(@task.list), partial: "lists/list", locals: { list: @task.list } %>

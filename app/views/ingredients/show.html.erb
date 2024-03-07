@@ -1,0 +1,24 @@
+<%= content_for :title, "Ingredients #{@ingredient.grocery.name}" %>
+<%= content_for :page_title do %>
+  <%= link_to meals_path, class: "pr-3" do %>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  <% end %>
+
+  <h1 class="h3">
+    <%= @ingredient.grocery.name %>
+  </h1>
+<% end %>
+
+<%= turbo_stream_from @ingredient %>
+
+<div class="container px-4 mx-auto my-8">
+  <div class="flex items-center justify-end mb-4">
+    <%= link_to t("edit"), edit_meal_ingredient_path(@meal, @ingredient), class: "btn btn-white" %>
+  </div>
+
+  <ul class="p-8 bg-white rounded shadow" style="list-style-type: none;">
+    <%= render @ingredient %>
+  </ul>
+</div>

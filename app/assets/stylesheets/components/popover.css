@@ -1,0 +1,30 @@
+#calendar-popover[data-popper-placement^='top'] > #arrow {
+  bottom: -4px;
+}
+
+#calendar-popover[data-popper-placement^='bottom'] > #arrow {
+  top: -4px;
+}
+
+#calendar-popover[data-popper-placement^='left'] > #arrow {
+  right: -4px;
+}
+
+#calendar-popover[data-popper-placement^='right'] > #arrow {
+  left: -4px;
+}
+
+#arrow,
+#arrow::before {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  z-index: -1;
+}
+
+#arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  background: #fff;
+  border: 1px solid #e4e4e4;
+}

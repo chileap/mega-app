@@ -1,0 +1,28 @@
+<%= content_for :title, "Coupons" %>
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Coupons</h1>
+<% end %>
+
+<div class="container overflow-auto w-full px-4 md:overflow-auto">
+  <div class="flex my-7 flex-col overflow-auto md:overflow-auto">
+    <% if @coupons.present? %>
+      <%= tag.ul id: ("coupons" if first_page?), class: "w-full flex flex-col", role: "list", style: "list-style-type: none;" do %>
+        <%= turbo_frame_tag "coupons", class: "grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" do %>
+          <%= render @coupons %>
+        <% end %>
+      <% end %>
+
+      <% if @pagy.pages > 1 %>
+        <div class="my-6 text-center">
+          <%== pagy_nav(@pagy) %>
+        </div>
+      <% end %>
+
+    <% else %>
+      <div class="hidden only:flex flex-col items-center justify-between lg:flex-row">
+        <%= image_tag "empty.svg", class: "mb-4 lg:w-1/2" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

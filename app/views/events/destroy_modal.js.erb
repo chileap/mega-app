@@ -1,0 +1,8 @@
+(function(){
+const destroyModal = document.querySelector('#destroy-modal');
+const destroyModalContent = document.querySelector("#destroy-modal .modal-content")
+destroyModal.classList.remove('hidden');
+
+destroyModalContent.innerHTML = "<%= j(render partial: 'events/destroy_modal', locals: { event: @event } ) %>";
+
+})();

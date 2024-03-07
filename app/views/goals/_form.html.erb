@@ -1,0 +1,96 @@
+<%= simple_form_for goal, html: { autocomplete: "off", data: { controller: "goals--form color-picker", "goals--form-target": "form", turbo: false }} do |form| %>
+  <div class="flex flex-row justify-between items-center mb-5">
+    <button class="inline-flex justify-center text-sm btn btn-gray btn-small" data-action="click->modal#close">
+      <%= render_svg "icons/cheveron-left", styles: "w-5 h-5 fill-current" %>
+    </button>
+    <h2 class="text-xl text-center">
+      <%= goal.persisted? ? "Edit Goal \"#{goal.title}\"" : "New Goal" %>
+    </h2>
+
+    <% if goal.persisted? %>
+      <%= form.button :button, class: "inline-flex justify-center text-sm btn btn-primary btn-small" do %>
+        Update Goal
+      <% end %>
+    <% else %>
+      <%= form.button :button, class: "inline-flex justify-center text-sm btn btn-primary btn-small" do %>
+        Add Goal
+      <% end %>
+    <% end %>
+  </div>
+
+  <hr class="mb-5"/>
+
+  <%= form.hidden_field :created_by, value: current_user.id %>
+
+  <label>Name</label>
+  <div class="flex flex-row items-center rounded-md border border-gray-300 p-2 mb-4 divide-x space-x-2">
+    <div class="rounded-full">
+      <%= form.hidden_field :color, "data-color-picker-target": "input" %>
+      <div class="rounded-full" data-color-picker-target="button"></div>
+    </div>
+
+    <div class="flex flex-col pl-2 w-full">
+      <%= form.input :title,
+        label: false,
+        placeholder: "Your Goal",
+        wrapper_html: { class: "border-b-0" }
+      %>
+
+      <div class="relative">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center">
+          <%= render_svg "icons/comment-outline", styles: "w-6 h-6 text-gray-400" %>
+        </div>
+
+        <%= form.input :description,
+          as: :string,
+          label: false,
+          placeholder: "Why do you want to achieve this goal?",
+          wrapper_html: { class: "border-b-0 pl-8" }
+        %>
+      </div>
+    </div>
+  </div>
+
+  <label>Date</label>
+  <div class="flex flex-row space-x-4 w-full rounded-md border border-gray-300 p-4 mb-4">
+    <div class="flex flex-col w-full">
+      <%= form.input :start_date, as: :string, placeholder: "MM/DD/YYYY", label: "Start Date", wrapper_html: { class: "flex-col" },
+        input_html: {
+          value: goal.persisted? ? goal.start_date : Date.today,
+          data: {
+            controller: "flatpickr",
+            flatpickr_alt_format: "m/d/Y",
+            flatpickr_alt_input: true,
+            flatpickr_allow_input: false,
+            action: "change->goals--form#updateEndDate"
+          }
+        }
+      %>
+    </div>
+
+    <div class="flex flex-col w-full">
+      <%= form.input :end_date, as: :string, placeholder: "MM/DD/YYYY", label: "End Date", wrapper_html: { class: "flex-col" },
+        input_html: {
+          value: goal.persisted? ? goal.end_date : (Date.today + 30.days),
+          data: {
+            controller: "flatpickr",
+            flatpickr_alt_format: "m/d/Y",
+            flatpickr_alt_input: true,
+            flatpickr_allow_input: false,
+            action: "change->goals--form#updateGoalEndDate"
+          }
+        }
+      %>
+
+      <div class="end-date-types hidden flex-wrap items-center space-x-2 space-y-2">
+        <% duration = goal.persisted? ? goal.duration : 0 %>
+        <button type="button" class="end-type-btn mt-2 <%= editTypeButtonClass(goal, 'today') %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="today">Today</button>
+        <button type="button" class="end-type-btn <%= editTypeButtonClass(goal, 30) %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="30">+30 Days</button>
+        <button type="button" class="end-type-btn <%= editTypeButtonClass(goal, 60) %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="60">+60 Days</button>
+        <button type="button" class="end-type-btn <%= editTypeButtonClass(goal, 90) %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="90">+90 Days</button>
+        <button type="button" class="end-type-btn <%= editTypeButtonClass(goal, 180) %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="180">+180 Days</button>
+        <button type="button" class="end-type-btn <%= editTypeButtonClass(goal, 'end-of-year') %>" data-action="click->goals--form#updateGoalEndDate" data-end-type="end-of-year">End of the year</button>
+      </div>
+    </div>
+  </div>
+<% end %>

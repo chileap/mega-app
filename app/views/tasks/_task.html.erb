@@ -1,0 +1,59 @@
+<%= turbo_frame_tag task do %>
+  <div class="flex mb-4 items-start w-full">
+    <%= form_with(model: task, html: { id: "form-completed-#{task.id}" }) do |f| %>
+      <%= hidden_field_tag :list_id, params[:list_id] %>
+      <%= f.check_box :completed_at,  {
+            checked: f.object.completed? ,
+            data: {action: "change->tasks--index#completedTask", "task-id": task.id },
+            class: "mr-2 align-middle bg-gray-50 border-gray-300 focus:ring-3 focus:ring-blue-300 h-5 w-5 rounded-full checked:bg-blue-500"
+          }, Time.current, ""
+        %>
+    <% end %>
+
+    <div class="w-full">
+      <div class="flex w-full mb-2">
+        <div class="flex-1">
+          <label class="font-medium text-gray-700">
+            <%= task.name %>
+          </label>
+          <% if task.notes.present? %>
+            <p class="text-gray-500"><%= task.notes %></p>
+          <% end %>
+          <% if params[:list_id].blank? %>
+            <p class="text-gray-500"><%= task.list_name %></p>
+          <% end %>
+
+          <% if task.completed_at.present? %>
+            <p class="<%= task.over_deadline? ? 'text-red-500' : 'text-gray-500' %> font-medium">
+              <%= task.completed_at.strftime('%D') %>
+            </p>
+          <% elsif task.due_date.present? %>
+            <p class="<%= task.over_deadline? ? 'text-red-500' : 'text-gray-500' %> font-medium">
+              <%= task.due_date.strftime('%D') %>
+            </p>
+          <% end %>
+        </div>
+        <div class="flex justify-center">
+          <% if task.flagged? %>
+            <%= link_to task_path(task, task: {flagged_at: nil}), method: :patch, class: 'flex-no-shrink p-2 rounded text-orange-600 hover:text-orange-200' do %>
+              <%= render_svg "icons/flag-outline", styles: "fill-orange-600 w-6 h-6 text-orange-600 inline-block" %>
+            <% end %>
+          <% else %>
+            <%= link_to task_path(task, task: {flagged_at: Time.current}), method: :patch, class: 'flex-no-shrink p-2 rounded text-orange-600 hover:text-orange-200' do %>
+              <%= render_svg "icons/flag-outline", styles: "fill-white w-6 h-6 text-gray-600 inline-block" %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="flex justify-end">
+          <%= link_to edit_task_path(task), class: 'flex-no-shrink p-2 rounded', form: { data: { turbo_frame: "_top" } } do %>
+            <%= render_svg "icons/pencil-square", styles: "fill-none w-6 h-6 text-gray-600 inline-block" %>
+          <% end %>
+          <%= link_to task_path(task), method: :delete, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+            <%= render_svg "icons/trash", styles: "fill-none w-6 h-6 text-red-600 inline-block" %>
+          <% end %>
+        </div>
+      </div>
+      <hr class="flex-1"/>
+    </div>
+  </div>
+<% end %>

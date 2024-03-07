@@ -1,0 +1,7 @@
+# coupons_importer:
+#   cron: "0 0 * * * America/Chicago" # execute at 12 am CST every day
+#   class: "CouponImporterWorker"
+
+habit_reminder:
+  cron: "*/1 * * * *"
+  class: "HabitReminderWorker"

@@ -1,0 +1,6 @@
+<div id="<%= dom_id(ingredient, :index) %>">
+  <%= turbo_stream_from ingredient %>
+  <%= render ingredient %>
+  <%= link_to "View", meal_ingredient_path(@meal, ingredient), class: "btn btn-white" %>
+</div>
+

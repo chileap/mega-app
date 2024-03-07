@@ -1,0 +1,22 @@
+<div id="calendar-popover-container">
+  <div id="calendar-popover-overlay" class="z-9 fixed left-0 right-0 bottom-0 top-0"></div>
+  <div id="calendar-popover" class="z-10 w-screen max-w-md px-2 sm:px-0">
+    <div id="arrow" data-popper-arrow></div>
+
+    <div class="overflow-scroll rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+      <div class="relative grid gap-6 bg-white px-2 py-6 sm:gap-8 sm:p-4">
+
+        <div class="absolute top-0 right-0 pt-4 pr-4 block">
+          <button type="button" id="popover-close-button" class="close-button rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none">
+            <span class="sr-only">Close</span>
+            <%= render_svg "icons/close", styles: "icon-sm text-current fill-current" %>
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

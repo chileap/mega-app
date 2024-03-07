@@ -1,0 +1,11 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to task"), task_path(@task) %>
+
+  <div class="header">
+    <h1>Edit task</h1>
+  </div>
+
+  <%= turbo_frame_tag @task do %>
+    <%= render "form", task: @task %>
+  <% end %>
+</main>

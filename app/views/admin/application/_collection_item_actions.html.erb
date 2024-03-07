@@ -1,0 +1,14 @@
+<% if existing_action?(collection_presenter.resource_name, :edit) && accessible_action?(resource, :edit) %>
+  <td>
+    <%= link_to([:edit, namespace, resource], class: "action-edit") do %>
+      <%= render_svg "icons/pencil-square", styles: "w-5 h-5" %>
+    <% end %>
+  </td>
+<% end %>
+<% if existing_action?(collection_presenter.resource_name, :destroy) && accessible_action?(resource, :destroy) %>
+  <td>
+    <%= link_to [namespace, resource], class: "text-color-red", method: :delete, data: { confirm: t("administrate.actions.confirm") } do %>
+      <%= render_svg "icons/trash", styles: "w-5 h-5" %>
+    <% end %>
+  </td>
+<% end %>

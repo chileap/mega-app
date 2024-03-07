@@ -1,0 +1,11 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to habit"), habit_path(@habit) %>
+
+  <div class="header">
+    <h1>Edit habit</h1>
+  </div>
+
+  <%= turbo_frame_tag @habit do %>
+    <%= render "form", habit: @habit %>
+  <% end %>
+</main>

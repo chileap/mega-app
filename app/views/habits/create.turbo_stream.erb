@@ -1,0 +1,7 @@
+<%= turbo_stream.append "habits" do %>
+  <%= render @habit %>
+<% end %>
+
+<%= turbo_stream.update Habit.new, "" %>
+
+<%= turbo_stream.replace dom_id(@habit.goal), partial: "goals/goal", locals: { goal: @habit.goal, current_goal: @habit.goal } %>

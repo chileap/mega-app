@@ -1,0 +1,7 @@
+div.input.boolean {
+  padding-top: 1rem;
+}
+
+.boolean label.checkbox {
+  @apply flex items-center w-full;
+}

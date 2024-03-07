@@ -1,0 +1,13 @@
+<%# Place any links for the RIGHT side of the nav bar here. Be sure to add class: "nav-link" to each item for proper spacing. %>
+
+<% if Jumpstart.config.payments_enabled? && (!user_signed_in? || current_workspace_admin?) && not_subscribed? && Plan.without_free.exists? %>
+  <%= nav_link_to t(".pricing"), pricing_path, class: "nav-link" %>
+<% end %>
+
+<%= nav_link_to announcements_path, class: ["nav-link", unread_announcements_class(current_user)] do %>
+  <% if user_signed_in? %>
+    <%= render_svg "icons/speaker-wave", styles: "text-gray-700" %>
+  <% else %>
+    <%= t('.announcements') %>
+  <% end %>
+<% end %>

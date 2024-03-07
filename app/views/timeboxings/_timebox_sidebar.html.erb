@@ -1,0 +1,17 @@
+<div class="mb-3 flex flex-col md:h-full" id='external-events'>
+  <div class="flex flex-col">
+    <%= render partial: "timeboxings/priority_area", locals: { priority_items: @priority_items, timeboxing: timeboxing } %>
+  </div>
+
+  <div class="flex flex-col">
+    <%= render partial: "timeboxings/brain_dump_area", locals: { brain_dump_items: @brain_dump_items, timeboxing: timeboxing } %>
+  </div>
+
+  <div class="flex flex-col pb-10">
+    <%= render partial: "timeboxings/notes_area", locals: { timeboxing: timeboxing } %>
+  </div>
+</div>
+
+<div class="hidden" id="new-item-form-wrapper">
+  <%= render partial: "timeboxings/item_field_form", locals: { item: TimeboxingItem.new, timeboxing: timeboxing } %>
+</div>

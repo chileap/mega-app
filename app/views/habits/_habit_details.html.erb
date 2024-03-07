@@ -1,0 +1,20 @@
+<%= turbo_frame_tag habit do %>
+  <div class="text-gray-600 text-sm ml-5 w-full">
+    <span class="badge rounded-md" style="background-color: <%= habit.goal.color + "1f" %>">
+      <span style="color: <%= habit.goal.color %>; opacity: 1"><%= habit.goal_title %></span>
+    </span>
+    <h2 class="text-lg"><%= habit.title %></h2>
+    <label class="font-medium text-gray-700">
+      <%= habit.goal_value %> <%= habit.goal_unit %>
+    </label>
+    <% if habit.time.present? %>
+      <p class="text-gray-500">
+        <%= habit.time.in_time_zone.strftime("%I:%M %p") %>
+
+        <% if habit.frequency.present? %>
+          <span class="text-gray-500 pl-2"><%= habit.frequency_text %></span>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+<% end %>

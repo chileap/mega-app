@@ -1,0 +1,21 @@
+<div class="flex border-top align-middle">
+  <div class="flex-1">
+    <% if connected_account.image_url.present? %>
+      <%= image_tag connected_account.image_url, class: "inline-block h-10 w-10 rounded shadow mr-2"  %>
+    <% else %>
+      <div class="inline-block h-10 w-10 rounded shadow mr-2 text-center">
+        <%= social_icon connected_account.provider, class: 'mt-2 text-#{connected_account.provider}' %>
+      </div>
+    <% end %>
+    <div class="inline-block align-middle">
+      <div><%= connected_account.name.presence || connected_account.email.presence %></div>
+      <div class="font-semibold text-sm text-gray-700">
+        <%= social_icon connected_account.provider, class: "text-#{connected_account.provider}" %>
+        <%= provider_config(connected_account.provider)[:name] %>
+      </div>
+    </div>
+  </div>
+  <%= button_to connected_account, method: :delete, class: "btn btn-danger text-white" do %>
+    <%= render_svg "icons/trash", styles: "text-current icon-sm" %>
+  <% end %>
+</div>

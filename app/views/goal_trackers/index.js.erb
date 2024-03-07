@@ -1,0 +1,15 @@
+(function(){
+  // Create a new calendar form
+  const goalTracker = "<%= j(render partial: 'goal_trackers/index', locals: { goal_trackers: @goal_trackers, current_habit: @current_habit } ) %>";
+
+  // Get the goal tracker section
+  const goalTrackerSection = document.getElementById("goal-tracker-section");
+  goalTrackerSection.classList.remove("w-0");
+  goalTrackerSection.parentElement.classList.add("flex", "flex-row", "min-w-0");
+
+  goalTrackerSection.parentElement.children[0].querySelector(".date-time-habit-wrapper").classList.add("lg:flex-col");
+  goalTrackerSection.classList.add("flex", "w-2/3", "h-full", "flex-col", "overflow-hidden", "xl:order-last", "md:border-l", "border-gray-200");
+
+  // Add the new calendar form to the goal tracker section
+  goalTrackerSection.innerHTML = goalTracker;
+})()

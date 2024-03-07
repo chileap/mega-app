@@ -1,0 +1,18 @@
+<%= turbo_frame_tag @contact_group do %>
+  <%= form_with(model: @contact_group, class: "flex justify-between items-center my-4", data: { action: "turbo:submit-end->contact_groups--form#clear" }) do |form| %>
+    <%= form.hidden_field :created_by, value: current_user.id %>
+
+    <div class="w-full">
+      <%= form.text_field :name, placeholder: "Name", class: "border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" %>
+    </div>
+
+    <div class="min-w-fit ml-2 flex justify-end items-center">
+      <%= form.button class: "inline-flex mr-2 items-center rounded-md border border-transparent bg-blue-600 p-1 text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" do %>
+        <%= render_svg "icons/checkmark", styles: "fill-white icon-sm" %>
+      <% end %>
+      <%= link_to contacts_path, method: :get, class: "inline-flex items-center rounded-md border border-gray-600 bg-white p-1 text-gray-600 shadow-sm hover:bg-gray-300" do %>
+        <%= render_svg "icons/close", styles: "fill-current-color icon-sm" %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

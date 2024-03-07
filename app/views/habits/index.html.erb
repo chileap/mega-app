@@ -1,0 +1,41 @@
+<%= content_for :page_title do %>
+  <h1 class="text-2xl font-bold">Habits</h1>
+<% end %>
+
+
+<% if current_workspace.goals.present? %>
+  <%= content_for :content_sidebar do %>
+    <div class="w-full lg:w-80 flex flex-col lg:overflow-y-auto md:border-r border-gray-200">
+      <%= render partial: "goal_sidebar" %>
+    </div>
+  <% end %>
+
+  <% if params[:goal_id].present? && @current_goal.present? %>
+    <section class="flex h-full w-full flex-col overflow-hidden xl:order-last">
+      <%= render "index", { current_goal: @current_goal, habits: @current_goal.habits } %>
+    </section>
+
+    <section id="goal-tracker-section" class="flex h-full flex-col overflow-hidden xl:order-last md:border-l border-gray-200">
+    </section>
+  <% end %>
+
+<% else %>
+  <div class="w-full h-full flex flex-col items-center justify-center">
+    <%= render_svg "icons/goals", styles: "mx-auto h-12 w-12 fill-gray-400" %>
+    <h3 class="my-2 text-sm font-semibold text-gray-900">No goals</h3>
+    <p class="mb-4 text-sm text-gray-500">Get started by creating a new goal.</p>
+
+    <div data-controller="modal" data-modal-allow-background-close="true" data-action="turbo:frame-load->modal#open turbo:submit-end->modal#close">
+      <a href="#" data-action="click->modal#open" class="btn btn-primary">
+        <%= render_svg "icons/plus-outline", styles: "-ml-0.5 mr-1.5 h-5 w-5" %>
+        <span>Add Goal</span>
+      </a>
+
+      <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="modal-container hidden">
+        <div class="modal-body">
+          <%= render partial: "goals/form", locals: { goal: Goal.new } %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

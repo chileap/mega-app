@@ -1,0 +1,2 @@
+.sortable-drag { display: none; }
+.fc-timegrid-event-harness-inset.sortable-ghost * { visibility: hidden; }

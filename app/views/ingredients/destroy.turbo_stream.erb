@@ -1,0 +1,2 @@
+<%= turbo_stream.remove @ingredient %>
+<%= turbo_stream.prepend(:flash, partial: "shared/flash", locals: {notice: "Ingredient was successfully destroyed."}) %>

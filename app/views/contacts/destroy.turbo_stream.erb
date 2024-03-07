@@ -1,0 +1,3 @@
+<%= turbo_stream.remove @contact %>
+
+<%= turbo_stream.replace dom_id(@contact.contact_group), partial: "contact_groups/contact_group", locals: { contact_group: @contact.contact_group } %>

@@ -1,0 +1,22 @@
+<form class="search" role="search">
+
+  <div class="relative mt-1 rounded-md shadow-sm">
+    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+      <%= render_svg "icons/search", styles: "icon-sm fill-gray-400" %>
+    </div>
+    <input id="search"
+         type="search"
+         name="search"
+         placeholder="<%= t("administrate.search.label",
+                            resource: resource_name) %>"
+         value="<%= search_term %>"
+         class="block w-full rounded-md border-gray-300 px-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        >
+
+    <div class="absolute inset-y-0 right-3 flex items-center">
+      <%= link_to clear_search_params do %>
+        <%= render_svg "icons/close-outline", styles: "icon-sm fill-gray-400" %>
+      <% end %>
+    </div>
+  </div>
+</form>

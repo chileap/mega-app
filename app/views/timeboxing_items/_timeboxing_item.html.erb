@@ -1,0 +1,32 @@
+<%= turbo_frame_tag timeboxing_item do %>
+  <div class="flex w-full mb-2">
+    <div class="flex flex-1 justify-between">
+      <div class="text-gray-600 text-sm ml-2 w-full <%= timeboxing_item.completed? ? 'line-through' : '' %>">
+        <h4 class="font-medium text-gray-700">
+          <%= timeboxing_item.name %>
+        </h4>
+
+        <div class="text-gray-600 text-sm">
+          <%= timeboxing_item.start_time.strftime("%A, %b %d") %>
+          <span class="font-semibold">⋅</span>
+          <%= timeboxing_item.start_time.strftime("%l:%M %p") %> – <%= timeboxing_item.end_time.strftime("%l:%M %p") %>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-end">
+      <%= link_to edit_timeboxing_item_path(timeboxing_item), id: "edit-btn-#{timeboxing_item.id}", class: 'flex-no-shrink p-2 rounded edit-btn', data: { id: timeboxing_item.id } do %>
+        <%= render_svg "icons/pencil-square", styles: "fill-none w-6 h-6 text-gray-600 inline-block" %>
+      <% end %>
+
+      <% if timeboxing_item.uncompleted? %>
+        <%= link_to undo_schedule_timeboxing_item_path(timeboxing_item), method: :put, class: 'flex-no-shrink p-2 rounded edit-btn', data: {controller: "tooltip", "tippy-content": "Undo Schedule", "tippy-delay": "0", "tippy-arrow": "true" } do %>
+          <%= render_svg "icons/calendar-canceled", styles: "fill-orange-600 w-6 h-6 inline-block" %>
+        <% end %>
+      <% end %>
+
+      <%= link_to timeboxing_item_path(timeboxing_item), method: :delete, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+        <%= render_svg "icons/trash", styles: "fill-none w-6 h-6 text-red-600 inline-block" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

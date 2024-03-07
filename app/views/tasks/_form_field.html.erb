@@ -1,0 +1,41 @@
+<div class="flex">
+  <%= form.input :name, label: false,
+    autofocus: true,
+    placeholder: "Name",
+    input_html: { data: {tasks__index_target: 'name'} }
+  %>
+
+  <div class="flex ml-4 items-center">
+    <%= form.check_box :flagged_at,
+      { checked: form.object.flagged? || params[:view] == "flagged",
+        class: "mr-2 align-middle hidden bg-gray-50 border-gray-300 focus:ring-3 focus:ring-blue-300 h-5 w-5 rounded-full checked:bg-blue-500",
+        data: { tasks__index_target: 'flaggedAt' }
+      }, Time.current, "" %>
+    <%= form.label :flagged_at, data: { action: "click->tasks--index#handleToggleFlagged" } do %>
+      <%= render_svg "icons/flag-outline", id: "flagged", styles: "#{form.object.flagged? || params[:view] == "flagged" ? 'inline-block' : 'hidden'} fill-orange-600 text-orange-600 icon-lg" %>
+      <%= render_svg "icons/flag-outline", id: "unflagged", styles: "#{form.object.flagged? || params[:view] == "flagged" ? 'hidden' : 'inline-block'} fill-white text-gray-600 icon-lg inline-block" %>
+    <% end %>
+
+  </div>
+</div>
+
+<%= form.input :notes, as: :text, rows: 1, label: false, placeholder: "Notes",
+  input_html: {
+    class: "mt-1 px-0 block w-full shadow-none border-0 border-b border-gray-300 bg-transparent focus:border-indigo-600 focus:ring-0 focus:shadow-none rounded-none sm:text-sm",
+    data: { tasks__index_target: 'notes' }
+  }
+%>
+
+<%= form.input :due_date, as: :string, label: false,
+  placeholder: "Due Date",
+  input_html: {
+    value: form.object.new_record? ? (params[:view] == "today" ? Date.today : nil) : form.object.due_date&.strftime("%Y-%m-%d"),
+    data: {
+      controller: "flatpickr",
+      flatpickr_alt_format: "%m/%d/%Y",
+      flatpickr_alt_input: true,
+      allow_input: true,
+      tasks__index_target: 'dueDate',
+    }
+  }
+%>

@@ -1,0 +1,13 @@
+.pickr .pcr-button:after, .pickr .pcr-button:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.pickr .pcr-button {
+  border-radius: 100%;
+}

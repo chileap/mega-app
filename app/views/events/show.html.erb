@@ -1,0 +1,21 @@
+<%= content_for :page_title do %>
+  <%= link_to events_path, class: "btn btn-default" do %>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+  <% end %>
+<% end %>
+<%= turbo_stream_from @event %>
+
+<div class="container px-4 mx-auto my-8">
+  <div class="overflow-hidden bg-white shadow sm:rounded-lg" id="<%= dom_id @event %>">
+    <div class="flex items-center justify-between px-4 py-5 sm:px-6">
+      <h1 class="text-lg font-medium leading-6 text-gray-900">Event</h1>
+      <div class="flex items-center justify-end mb-4">
+        <%= link_to t("edit"), edit_event_path(@event), class: "btn btn-white mr-2" %>
+        <%= button_to t("delete"), @event, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: t("are_you_sure") } } %>
+      </div>
+    </div>
+    <%= render @event %>
+  </div>
+</div>

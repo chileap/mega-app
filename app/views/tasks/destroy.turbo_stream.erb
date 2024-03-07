@@ -1,0 +1,2 @@
+<%= turbo_stream.remove @task %>
+<%= turbo_stream.replace dom_id(@task.list), partial: "lists/list", locals: { list: @task.list } %>

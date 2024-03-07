@@ -1,0 +1,21 @@
+<%= turbo_frame_tag ingredient_template do %>
+  <li id="<%= dom_id(ingredient_template, :index) %>">
+    <div class="flex items-center justify-between px-4">
+      <div class="flex min-w-0 flex-1 items-center justify-between w-full">
+        <div class="min-w-0 flex-1 md:grid md:grid-cols-2 md:gap-4 py-4">
+          <div>
+            <p class="truncate text-sm font-medium text-indigo-600"><%= ingredient_template.grocery.name %></p>
+            <p class="truncate text-sm text-gray-500"><%= ingredient_template.grocery.category_name %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center">
+        <p class="text-gray-600">
+          <%= ingredient_template.quantity %> <%= ingredient_template.unit_type %>
+        </p>
+      </div>
+    </div>
+    <hr class="flex-1"/>
+  </li>
+<% end %>

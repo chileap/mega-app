@@ -1,0 +1,47 @@
+# == Schema Information
+#
+# Table name: workspace_users
+#
+#  id           :bigint           not null, primary key
+#  roles        :jsonb            not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  user_id      :bigint
+#  workspace_id :bigint
+#
+# Indexes
+#
+#  index_workspace_users_on_user_id       (user_id)
+#  index_workspace_users_on_workspace_id  (workspace_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (user_id => users.id)
+#  fk_rails_...  (workspace_id => workspaces.id)
+#
+
+one:
+  user: one
+  workspace: one
+  roles:
+    admin: true
+
+two:
+  user: two
+  workspace: two
+  roles:
+    admin: true
+
+company_admin:
+  workspace: company
+  user: one
+  roles:
+    admin: true
+
+company_regular_user:
+  workspace: company
+  user: two
+
+invited_user:
+  workspace: invited
+  user: invited

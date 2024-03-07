@@ -1,0 +1,9 @@
+<%= turbo_stream.remove @goal %>
+
+<% if @current_goal.present? %>
+  <%= turbo_stream.replace dom_id(@current_goal), partial: "goals/goal", locals: { goal: @current_goal, current_goal: @current_goal } %>
+<% end %>
+
+<%= turbo_stream.replace :goal_habits do %>
+  <%= render partial: "habits/index", locals: { current_goal: @current_goal, habits: @current_goal.present? ? @current_goal.habits : []  } %>
+<% end %>

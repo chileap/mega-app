@@ -1,0 +1,70 @@
+<div class="form-group">
+  <%= form.label :name %>
+  <%= form.text_field :name, class: "form-control", required: true %>
+</div>
+
+<div class="form-group">
+  <%= form.label :description %>
+  <%= form.text_area :description, class: "form-control" %>
+</div>
+
+<%= form.hidden_field :time_zone, value: current_user.time_zone || browser_time_zone.name %>
+<div class="flex space-x-2 my-2">
+  <div class="form-group mt-2 grow w-56">
+    <%= form.datetime_field :start_time, class: "form-control", required: true,
+      placeholder: "YYYY-MM-DD",
+      data: {
+        controller: "flatpickr",
+          flatpickr_alt_format: "F, l j",
+          flatpickr_alt_input: true,
+          allow_input: true,
+        calendar_target: 'startDateTime'
+      }
+    %>
+  </div>
+
+  <div class="flex">
+    <div class="inline-block text-sm py-2 leading-none rounded no-underline text-gray hover:text-gray-900 hover:bg-white mt-4 lg:mt-0">
+      <div class="relative">
+          <%= form.text_field :on_start_time, class: "form-control", required: true,
+            value: "#{event_start_hour(form.object.persisted?, form.object.start_time)}:00",
+            data: {
+            controller: "flatpickr",
+              flatpickr_enable_time: true,
+              flatpickr_no_calendar: true,
+              flatpickr_alt_format: "H:i",
+              flatpickr_time_24hr: false,
+              calendar_target: 'startTime',
+            }
+          %>
+      </div>
+    </div>
+    <span class="mt-5 text-medium ml-2"> - </span>
+    <div class="inline-block text-sm p-2 pr-0 leading-none rounded no-underline text-gray hover:text-gray-900 hover:bg-white mt-4 lg:mt-0">
+      <div class="relative">
+          <%= form.text_field :on_end_time, class: "form-control", required: true,
+            value: "#{event_end_hour(form.object.persisted?, form.object.end_time)}:00",
+            data: {
+              controller: "flatpickr",
+              flatpickr_enable_time: true,
+              flatpickr_no_calendar: true,
+              flatpickr_alt_format: "H:i",
+              flatpickr_time_24hr: false,
+              calendar_target: 'endTime ',
+            }
+          %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group mt-2 grow w-56 <%= end_time_errors?(form) ? '' : 'hidden' %>">
+    <%= form.datetime_field :end_time, class: "form-control", required: true,
+      placeholder: "YYYY-MM-DD",
+      data: {
+        controller: "flatpickr",
+        flatpickr_alt_format: "F, l j",
+        flatpickr_alt_input: true,
+        allow_input: true
+      }
+    %>
+  </div>
+</div>

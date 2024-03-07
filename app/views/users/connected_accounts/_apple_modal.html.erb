@@ -1,0 +1,36 @@
+ <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed inset-0 overflow-y-auto flex items-center justify-center" style="z-index: 9999;">
+  <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm">
+          <div class="flex min-h-full flex-col justify-center">
+            <div class="flex justify-between items-center flex-wrap px-8 py-4">
+              <h2 class="text-gray-700 text-lg">Connect to your Apple Account</h2>
+
+              <button type="button" class="bg-white rounded-md inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"  data-action="click->modal#close">
+                <span class="sr-only">Close menu</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="px-8 pb-8">
+              <div class="pb-2 text-center">
+                <p class="text-gray-500 text-sm">
+                  Enter your Apple ID and app-specific password to connect your account.
+                </p>
+                <p class="text-gray-500 text-sm">
+                  Don't have an app-specific password? <a href="https://support.apple.com/en-us/HT204397" target="_blank" class="text-indigo-600 hover:text-indigo-500">Learn how to create one.</a>
+                </p>
+              </div>
+
+              <%= render 'form', connected_account:  User::ConnectedAccount.new(provider: "apple") %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

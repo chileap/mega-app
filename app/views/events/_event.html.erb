@@ -1,0 +1,83 @@
+<%= turbo_frame_tag event do %>
+  <div class="flex mb-4 items-start w-full">
+    <div class="w-full">
+      <div class="flex w-full mb-2">
+        <div class="flex-1">
+          <div class="flex flex-col">
+            <div class="flex justify-between">
+
+              <% unless event.default? %>
+                <%= render_svg "icons/#{event.source_type}" %>
+              <% end %>
+
+              <div class="text-gray-600 text-sm ml-5 w-full">
+                <h4 class="font-medium text-gray-700">
+                  <%= event.name %>
+                </h4>
+
+                <div class="text-gray-600 text-sm">
+                  <% if event.all_day? && event.is_same_day? %>
+                    <%= event.start_time.strftime("%A, %b %d") %>
+                  <% elsif event.all_day? %>
+                    <%= event.start_time.strftime("%A, %b %d") %> – <%= event.end_time.strftime("%A, %b %d") %>
+                  <% elsif event.is_same_day? %>
+                    <%= event.start_time.strftime("%A, %b %d") %>
+                    <span class="font-semibold">⋅</span>
+                    <%= event.start_time.strftime("%l:%M %p") %> – <%= event.end_time.strftime("%l:%M %p") %>
+                  <% else %>
+                    <%= event.start_time.strftime("%A, %b %d %l:%M %p") %> – <%= event.end_time.strftime("%A, %b %d %l:%M %p") %>
+                  <% end %>
+                </div>
+
+                <div class="text-gray-600 text-sm">
+                  <% if event.recurring? %>
+                    <%= event.repeat_text %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <% if event.description.present? %>
+              <div class="flex justify-between my-3">
+                <div class="w-6 h-6 inline-block">
+                  <%= render_svg "icons/bar3-left", styles: "w-6 h-6 text-gray-600 fill-gray-600 inline-block" %>
+                </div>
+                <div class="text-gray-600 text-sm ml-5 w-full">
+                  <span class="font-medium text-gray-700">
+                    <%= event.description %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+
+            <% if event.calendar_services.present? && event.source_type.default? %>
+              <div class="flex justify-between my-3">
+                <%= render_svg "icons/calendar-sync", styles: "icon-lg fill-current hover:fill-blue-500" %>
+                <div class="text-gray-600 text-sm ml-3 w-full flex flex-row">
+                  <% event.calendar_services.each do |calendar_service| %>
+                    <%= render_svg "icons/#{calendar_service.provider}", styles: "icon-lg" %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <%= link_to edit_event_path(event), id: "edit-btn-#{event.id}", class: 'flex-no-shrink p-2 rounded edit-btn', data: { id: event.id } do %>
+            <%= render_svg "icons/pencil-square", styles: "fill-none w-5 h-5 text-gray-600 inline-block" %>
+          <% end %>
+
+          <% if event.recurring? %>
+            <%= link_to destroy_modal_event_path(event), id: "delete-btn-#{event.id}", data: { id: event.id, start_date: @start_date, end_date: @end_date }, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+              <%= render_svg "icons/trash", styles: "fill-none w-5 h-5 text-red-600" %>
+            <% end %>
+          <% else %>
+            <%= link_to event_path(event), method: :delete, class: 'flex-no-shrink p-2 rounded text-red-600 hover:text-red-200' do %>
+              <%= render_svg "icons/trash", styles: "fill-none w-5 h-5 text-red-600 inline-block" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
