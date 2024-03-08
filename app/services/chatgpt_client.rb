@@ -17,8 +17,8 @@ class ChatgptClient
       }
     )
     puts "getting result"
-    if response['error'].present?
-      Rails.logger.error "Error: #{response['error']['message']}"
+    if response["error"].present?
+      Rails.logger.error "Error: #{response["error"]["message"]}"
       return []
     end
     response.dig("choices", 0, "text").split("\n").reject { |text| text.empty? }
