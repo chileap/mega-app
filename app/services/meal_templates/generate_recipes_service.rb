@@ -14,6 +14,11 @@ class MealTemplates::GenerateRecipesService < ApplicationService
 
     begin
       recipes = ChatgptClient.new.create_completion(prompt_message)
+
+      if recipes.blank?
+        meal_template.errors.add(:base, "No recipes found")
+        return meal_template
+      end
       ingredients, instructions = parse(recipes)
       update_meal_template_with_recipes(ingredients, instructions, prompt_message, recipes)
     rescue => exception
