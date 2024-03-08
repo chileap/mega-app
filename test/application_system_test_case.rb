@@ -5,6 +5,8 @@ Dir["#{File.dirname(__FILE__)}/support/system/**/*.rb"].sort.each { |f| require 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: ENV.fetch("DRIVER", :headless_chrome).to_sym, screen_size: [1400, 1400]
 
+  Selenium::WebDriver.logger.level = :info
+
   include Warden::Test::Helpers
   include StripeSystemTestHelper
   include TrixSystemTestHelper
