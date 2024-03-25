@@ -47,7 +47,7 @@
     "stimulus-color-picker": "^1.1.0",
     "stimulus-flatpickr": "^3.0.0-0",
     "tailwindcss": "^3.3.1",
-    "tailwindcss-stimulus-components": "^3.0.4",
+    "tailwindcss-stimulus-components": "^5.1.1",
     "tippy.js": "^6.3.5",
     "tom-select": "^2.2.2",
     "tributejs": "^5.1.3",
